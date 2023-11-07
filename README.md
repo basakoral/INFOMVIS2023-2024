@@ -56,7 +56,7 @@ The next minutes are split up into multiple theoretical and interactive sections
 
 *The result of the first lab may look like the following screenshot. Most of the design decisions are up to you - so feel free to be creative and come up with your own ideas.*
 
-![Lab 1 - Preview](./infomvis2022-lab1-preview.png)
+![Lab 1 - Preview](./src/infomvis2022-lab1-preview.png)
 
 **You can find the image files on SURFdrive directory!**
 
