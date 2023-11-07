@@ -1,4 +1,4 @@
-    # Week 1 - Lab
+# Week 01 | Lab
 
 Welcome to the first lab of INFOMVIS2022!
 
