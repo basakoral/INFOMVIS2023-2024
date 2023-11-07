@@ -1,610 +1,714 @@
-
 # Week 02 | Lab
 
-### Learning Objectives
+## Fundamentals of Web Development (JavaScript)
 
-- Know how to use basic shape elements in SVG
-- Advanced JS: *method chaining*; *anonymous functions*; first intuition about asynchronous execution & callbacks
-- Know how to include D3 in your project
-- Know the structure and syntax of a basic D3 visualization
-- Know how to load data into D3
-- Know how to bind data to visual elements
-
-### Prerequisites
-
-- You have read chapter 3 (p. 52-62) and chapter 5 (p. 67-72, p. 79-87)  in *D3 - Interactive Data Visualization for the Web*.
-- You have downloaded the template for this week's lab on Surfdrive. This [link](https://surfdrive.surf.nl/files/index.php/s/y2KUQIVLS4jlwAN) should get you there quickly.
-
-&nbsp;
-
-Last week you have learned a lot about the fundamentals of web development. Now, you should be well prepared for the upcoming phase where you will work on interactive data visualizations with D3.
+### Introduction
 
 
-## D3 - First Steps
+*From now on, and in all upcoming labs and homeworks we will use the common abbreviation JS for the term JavaScript.*
 
-> ***D3.js (Document-Driven-Data) is a powerful JavaScript library for manipulating documents based on data.***
->
-> "D3 allows you to bind arbitrary data to a Document Object Model (DOM), and then apply data-driven transformations to the document. For example, you can use D3 to generate an HTML table from an array of numbers. Or, use the same data to create an interactive SVG bar chart with smooth transitions and interaction." *(d3.js, Mike Bostock*)
+This lab includes three activities and covers JS basics. It is intended to solidify your understanding of JS so that you are able to write your own code in upcoming exercises. If you already know JS well, feel free to skim the text and jump right to the activites. However, if you are new to JS or need a refresher, make sure to read the text closely!
 
-A summary of D3's features and key aspects by *Scott Murray*:
+*The result of this lab may look like the following screenshot. Among other things, you will work with data from amusement parks and museums and do some array manipulations and filtering. At the end you will use JS to call a function that will render a pre-configured bar chart.*
 
-- ***Loading*** data into the browser`s memory
-- ***Binding*** data to elements within the document and creating new elements as needed
-- ***Transforming*** those elements by interpreting each element's bound datum and setting its visual properties accordingly
-- ***Transitioning*** elements between states in response to user input
+![Lab 2 - Preview](./infomvis2022-lab2-preview.png)
 
-*We will introduce all these concepts in the following weeks.*
+### A short reiteration of the basic concepts of JavaScript (JS)
 
-&nbsp;
+We assume that you have completed the pre-reading on JS, so here we are only showing you some examples and use cases of JS basics.
 
+#### Variables
 
-### D3 Version
+```javascript
+// Variables in JS are loosely typed
 
-**INFOMVIS2022 is using D3 version 7!**
+// String
+let month = "February";
 
-Many of the changes in v5 - v7 address very specific issues that are not of relevance for you, and thus, the examples in the textbook (D3 v.4) still serve as
-excellent references. Also, when looking up code online, be aware that many examples still use older versions and, as
-a consequence, you might not be able to just copy paste the entire code -  you will need to make some changes! (The most
-common one probably being the data loading part - since version 5, D3 uses promises, which makes things a lot smoother!) Check out
-the different versions here:  [https://github.com/d3/d3/releases](https://github.com/d3/d3/releases)
+// Integer
+let day = 4;
 
+// Double
+let temperature = 34.36;
 
-### D3 Integration
-
-*This is a brief overview of how to set up a basic D3 project. This should not be completely new but it might help you to solve the activity later.*
-
-Before working with D3 you need to include the D3 JavaScript library first. When embedding it into your html, the source can either be local copy or a secure link to the latest d3 version online, i.e.  ```<script src="https://d3js.org/d3.v7.min.js"></script>```
-
-Your file and folder structure for D3 projects should look like the following:
-
-```
-project/	
-    index.html
-    data/
-        data.csv
-        ..
-    css/
-        style.css
-        ..
-    js/
-        main_presentation.js
-        (other_js_libs.js)
-        ..
+// Boolean
+let winter = true;
 ```
 
+
+#### Data Structures
+
+##### Arrays
+* Arrays can store a sequence of values, and contain any type of data.
+* Use bracket notation ```[]``` to define or access an array.
+
+```javascript
+// Array with integer values
+let numbers = [1, 2, 3, 100, 500, 4];
+
+// Array with strings
+let fruits = ["Orange", "Banana", "Apple"];
+
+// Empty array declaration
+let names = [];
+
+// Access the elements of an array
+fruits[0]; 	// Returns: Orange
+fruits[1]; 	// Returns: Banana
+
+// Adding array elements
+fruits.push("Mango");	// adds a new element to fruits
+
+// Access the length of an array using the length attribute
+let numberOfFruits = fruits.length;
+
+// You can nest arrays (multidimensional)
+let nestedNumbers = [[1, 2], [3, 4], [5, 6]];
+```
+
+> You can do much more with arrays than shown here. Again, check out the [MDN documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) if you have no experience with JavaScript or difficulties with some concepts. Arrays are very important for data visualization, so take the time to go through this at home!
+
+
+##### Objects
+
+* Objects are the second type of compound data types in JS.
+* Use curly brackets ```{}``` to define an object and list *properties* and *values*.
+
+```javascript
+// JS object with four properties
+let course = {
+	id: "INFOMVIS2022",
+	name: "Visualization",
+	students: 30,
+	active: true
+}
+
+// Accessing an object via dot notation, specifying the name of the property
+course.id; 		// Returns: INFOMVIS2022
+course.students;	// Returns: 30
+
+// We can include arrays in objects
+let course = {
+	id: "INFOMVIS2022",
+	students: ["Luuk", "Michelle", "Lucas", "Anne"]
+};
+
+// And we can also create arrays of objects
+let courses = [
+	{ id: "INFOMVIS2022", name: "Visualization" },
+	{ id: "INFOMPR", name: "Pattern Recognition" }
+];
+
+// To access this data we just follow the trail of properties
+courses[1].id; 	// Returns: INFOMPR
+
+// Keep in mind: [...] means array and {...} means object!
+```
+
+##### JSON (JavaScript Object Notation)
+
+* JSON is a popular data-interchange format for APIs (application program interfaces) and therefore very important for our future tasks.
+* It is basically a JS object, with the only difference being that the property names are surrounded by double quotation marks.
+
+```javascript
+// JSON object
+let course = {
+	"id": "INFOMVIS2022",
+	"name": "Visualization",
+	"students": 30,
+	"active": true
+}
+```
+
 &nbsp;
 
-### An Overview of SVG (Scalable Vector Graphics)
+-----
 
-- SVG is defined using markup code similar to HTML
-- SVG elements don't lose any quality if they are resized
-- SVG elements can be included directly within any HTML document or dynamically inserted into the DOM with JavaScript
-- Before you can draw SVG elements you have to add an ```<svg>```-element with a specific width and height to your HTML document, for example: ```<svg width="500" height="500"></svg>```
-- The SVG coordinate system places the origin (0/0) in the top-left corner of the svg element.
-- SVG has no layering concept or depth property. The order in which elements are coded determines their depth order.
+## Activity I
+
+1. **Use the JavaScript Web Console**
+
+	As we have already learned, there are some developer tools in our web
+	 browsers that make programing a bit easier. Normally, we include JS code in HTML files and
+	  then open these files in the browser. But we can also use the *Console* to type JS code
+	   directy in the browser. We've also provided more information about the console, how to use
+	    it as a debugging tool and what's going on underneath the hood [here](####the-console).
+
+	* Open your developer-tools (in your browser) and switch to the tab ***Console***
+
+	* Create a few variables and try out some mathematical operators to see how it works. The console accepts one line of code at a time.
+
+	* Type in the examples below, line by line.
+
+		Examples:
+
+		```javascript		
+		(1) let message = "I am learning JS"
+		(2) message
+
+		(1) let cities = ["Tokio", "Berlin", "San Francisco"]
+		(2) cities[0]
+		(3) cities [2]
+
+		(1) let numeric = 12
+		(2) numeric / (1 + 2)
+		```
+
+	*If you need multiple lines (e.g. JSON object) you can write the code in an editor and copy it into the console. This is an easy and quick way to test out code. Furthermore, the console is an essential tool for debugging. We will give it a try soon, but first continue with step (2).*
+
+2. **JS data structure**
+
+	Now it is your turn to apply your acquired knowledge! Come up with a *proper compound JS data structure* to store the following information and make sure that its values are simple and efficient.
+
+	We have data for **three attractions** in an amusement park that we want to store. Each amusement ride has several attributes:
+
+	- ID
+	- Name
+	- Price in USD
+	- List with opening days (some attractions are open only on specific days, like weekends)
+	- Limited access for children (yes / no)
 
 
-**Basic shape elements in SVG:** ```rect```, ```circle```, ```ellipse```, ```line```, ```text``` and ```path```
+	*You can make up the actual values for each of those attributes. We are mainly interested in the following: How would you store this data in code? Which data structure(s) would you use?  We suggest that you start with pen and paper to design your data structure (or your local code editor). Which JS data structure would you use (basic data types, arrays, objects, etc.)? Which data types (string, boolean, etc.) would you use to represent the data? Once you know how you want to implement it, continue to step (3).*
 
-*Examples:*
+3. **Create a new HTML file and JS file and implement the data structure**
 
-```html
-<svg width="400" height="50">
+	JS can be included directly in HTML or in a separate file with *.js* suffix and then referenced. Generally, including JS in a separate file is the preferred method:
 
-	<!-- Rectangle (x and y specify the coordinates of the upper-left corner -->
-	<rect x="0" y="0" width="50" height="50" fill="blue" />
+	```javascript
+	// Included directly
+	<script type="text/javascript">
+		let message = "test";
+	</script>
 
-	<!-- Circle: cx and cy specify the coordinates of the center and r the radius -->
-	<circle cx="85" cy="25" r="25" fill="green" />
+	// Referenced (at the bottom of the <body> tag, below other included javascript libraries)
+	<script type="text/javascript" src="js/myscript.js"></script>
+	```
 
-	<!-- Ellipse: rx and ry specify separate radius values -->
-	<ellipse cx="145" cy="25" rx="15" ry="25" fill="purple" />
+	Make up some example data (3 amusement rides, with the above described attributes) and implement your data structure in JS.
 
-	<!-- Line: x1,y1 and x2,y2 specify the coordinates of the ends of the line -->
-	<line x1="185" y1="5" x2="230" y2="40" stroke="gray" stroke-width="5" />
+4. **Write messages to the web console**
 
-	<!-- Text: x specifies the position of the left edge and y specifies the vertical position of the baseline -->
-	<text x="260" y="25" fill="red">SVG Text</text>
+	The console is an essential tool for debugging. It shows logged security alerts, warnings, errors, informational messages etc. When you are creating scripts, you can write your own debug messages to the console:
 
-</svg>
+	```javascript
+	console.log("My debug message");
+
+	let debugId = 12;
+	console.log("Another debug message with id: " + debugId);
+	```
+
+	Use ```console.log()``` to print some information of your dataset:
+
+	* Name of the first amusement ride
+	* All days when the second attraction is open
+	* First item of the list of opening days from the second amusement ride
+	* There is a 50% discount for your third attraction! Print the reduced price.
+
+&nbsp;
+
+-----
+
+
+
+
+You should already be familiar with **control structures**, **loops** and **functions**. The following just shows some examples and the correct syntax for using those structures.
+
+
+#### Control Structures & Loops
+
+##### IF-STATEMENT
+
+```javascript
+let numericData = 10;
+
+// Regular if statement
+if (numericData >= 10) {
+	console.log("Equal or greater than 10");
+} else if (numericData > 0 && numericData < 10) {
+	console.log("Between 0 and 10");
+} else {
+	console.log("Less than 1");
+}
+
+// The ternary operator can be used as a compact alternative to an if-statement
+// CONDITION ? WHAT_HAPPENS_IF_TRUE : WHAT_HAPPENS_IF_FALSE
+let result = (numericData >= 10) ? "greater than or equal to 10" : "less than 10";
+let result = (numericData % 2 === 0) ? "even" : "odd";
+```
+
+##### FOR-LOOP
+
+```javascript
+// (1) Loop through a block of code 5 times (printing the value of i each time to the console)
+for (let i = 0; i < 5; i++) {
+	console.log(i);
+}
+
+// (2) Loop through each of the values in an array
+let arrayWithNames = ["Jack", "Anna", "Mike", "Susan"];
+for (let i = 0; i < arrayWithNames.length; i++) {
+	console.log(arrayWithNames[i]);
+}
+
+// (3) Loop through the properties of an object
+let person = { firstName: "John", lastName: "Doe", age: 24 };
+for (let property in person) {
+	console.log(property + ": " + person[property]);
+}
+
+
+// (4) The holy grail of JS loops:
+// makink use of object oriented JS, the forEach loop is an array methode
+// that iterates over all elements in the array. The index of the element
+// and the element itself are available inside the loop via an anonymous callback function.
+// That's definitely a lot to wrap your head around, but once you get used to it, this loop is pure magic.
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # #
+arrayWithNames.forEach( (element, index) => {
+	console.log(index + ": " + element);
+});
+# # # # # # # # # # # # # # # # # # # # # # # # # # #
 ```
 
 *Result:*
+![Lab 2 - For-Loops](./infomvis2022-for-loop-examples.png)
 
-![SVG Examples](./infomvis2022-svg-result.png)
 
-&nbsp;
+#### Functions
 
-### Adding a DOM Element with D3
-
-In previous labs and homeworks, you have already worked with dynamic content and added new elements to the DOM tree, most likely with plain JavaScript or jQuery.
-
-Now, we want to generate new page elements with D3. After loading the D3 library we can add our own script (e.g., main_presentation.js).
-
-Our JS script (main_presentation.js) consists actually only of one line of code:
-
-```
-d3.select("body").append("p").text("Hello World!");
-```
-
-In this example we have used D3 to add a paragraph with the text "Hello World!" to a basic webpage.
-
-![D3 - Add element to DOM](./infomvis2022-d3-generate-element.png)
-
-Before going into further details we want to introduce the JS concept of *Method Chaining* briefly:
-
-> **Method Chaining**
->
-> Method or function chaining is a common technique in JS, especially when working with D3. It can be used to simplify code in scenarios that involve calling multiple methods on the same object consecutively.
->
-> - The functions are "chained" together with periods.
-> - The output type of one method has to match the input type expected by the next method in the chain.
->
-> Alternative code without method chaining:
->
-> ```javascript
-> let body = d3.select("body");
-> let p = body.append("p");
-> p.text("Hello World!");
-> ```
->
-> *(We will use the chain syntax in most examples and templates)*
-
-&nbsp;
-
-**```d3```** - References the D3 object, so we can access its functions by starting our statement with: ```d3.```
-
-#### D3 Select
-
-The D3 *select()* method uses CSS selectors as an input to grab page elements (think of it as the d3 equivalent of ```document.getElementById()``` or ```document.querySelector()```). It will return a reference to the first element in the DOM that matches the selector.
-
-In our example we have used ```d3.select("body")``` to select the first DOM element that matches our CSS selector: ```body```. Once an element is selected - and handed off to the next method in the chain - you can apply *operators*. These D3 operators allow you to get and set ***properties***, ***styles*** and ***content*** (and will again return the current selection).
-
-*(Alternatively, if you want to select more than one element, use ```selectAll()```. We will try it later in an example.)*
-
-#### D3 Append
-
-After selecting a specific element we have used an operator to assign content: ```.append("p")```
-
-The *append()* operator adds a new element as the last child of the current selection. We specified "p" as the input argument, so an empty paragraph has been added to the end of the *body*. The new paragraph is automatically selected for further operations.
-
-At the end we have used the *text()* property to insert a string between the opening and closing tags of the current selection.
-
-In summary, all methods together:
+Here we list a few examples to show you the syntax for functions. In the following weeks you will learn more about anonymous functions, callbacks etc.
 
 ```javascript
-d3.select("body")
-		.append("p")
-		.text("Hello World!");
+// Call a function
+toCelsius(34);
+
+// Function (with input parameter and return value)
+function toCelsius(fahrenheit) {
+	return (5/9) * (fahrenheit-32);
+}
+
+// Another function call
+console.log("Write something to the web console");
+
+// Function used as a variable
+let temperature = "Current temperature: " + toCelsius(34) + " Celsius";
 ```
 
-*Your D3 statements can be much longer, so we recommend putting each method on its own indented line.*
+
+> To create a **local variable**, use the keyword ```let```. *Local* refers to the current execution context. When used within a function these variables are **private to that function**, however, when they are declared outside a function they are global.
+
+&nbsp;
 
 -----
 
-#### Activity I
+## Activity II
 
-1. **Download the Template for this week. [link](https://surfdrive.surf.nl/files/index.php/s/y2KUQIVLS4jlwAN)**
+*In this exercise you should use your data structure from the previous activity (amusement rides) and add two short functions to the JS file.*
 
-2. **Navigate to 'activity_1' and create a new D3 project inside the folder.**
+1. **Create a new function: doublePrices()**
 
-   *At this point it might also be a good idea to create a boilerplate template project (i.e., directory structure) that you can copy every time you create a new project. The template project should include the directory structure for your project and all the files and boilerplate you usually need (e.g., D3 libraries, Bootstrap, etc.). In fact, in the template code for this week, we've included a folder named 'boilerplate' that contains such a boilerplate project. Feel free to use this as your starting point for your own custom boilerplate project.*
+	This function takes your data structure as an input variable. You should loop through all the amusement rides, and modify their prices (*2). (Note: You will be modifying the original data here, but that is fine. You do not need to create a deep copy of the data.)
 
-3. **Add an SVG rectangle to the HTML document**
+	```javascript
+	// Calling the function
+	let amusementRidesDouble = doublePrices(amusementRides);
 
-   *CSS: width: 400px; height: 200px; color: green*
+	// Implementation of the function
+	function doublePrices(amusementRides) {
 
-4. **Use D3 to add a ```div```-container with the text "Dynamic Content" to the DOM**
+		// TODO: Modify data here ...
 
-   *do this task in a separate JS file (e.g. main_presentation.js) that you embed in your HTML document*
+	}
+	```
+
+	You can add a ```console.log(amusementRidesDouble);``` at the end to look at the result of your code.
+
+	> Pro tip: In JS, when you pass a primitive type variable (e.g., string or number) to a function, it is passed by value. On the other hand, if you pass an object, it is passed by reference. To try out the difference, check out this [JSFiddle code snippet](https://jsfiddle.net/ywn5vno5/). If you don't know the difference between pass-by-value and pass-by-reference, don't worry about it for now. But you might want to come back to this eventually.
+
+	&nbsp;
+
+2. **Modify the function doublePrices() to double all prices, except for the second item in your list of amusement rides**
+
+	&nbsp;
+
+3. **Create a second function: debugAmusementRides()**
+
+	In this function, loop through the modified list of attractions and write the **name** and the new **price** for each item to the console.
+
+	```javascript
+	// The + operator can be used to concatenate strings/variables.
+	let firstName = "John";
+	let lastName = "Doe";
+	let name = firstName + " " + lastName;
+
+	console.log(name); 	// Returns: John Doe
+	```
+	&nbsp;
+
+4. **Changing the DOM with JS**
+
+	Now we want to display some attributes of our amusement rides directly on the website, not just the JS console. To do this, we first have to create a new HTML element and then fill the content of this element dynamically with JS.
+
+	The easiest way to modify the content of an HTML element is by using its *innerHTML* property. This implies that you have to create a string for the HTML snippet you want to insert first, and then set the *innerHTML* property. For example, you can create a new string variable and extend it in a for-loop, before you assign it to the *innerHTML property*.
+
+	Here is an example that you can copy and paste into your HTML file:
+
+	```javascript
+	<div id="content-1"></div>
+	<div id="content-2"></div>
+
+	<script type="text/javascript">
+		// Write HTML with JS
+		document.getElementById("content-1").innerHTML = '<h1>Headline</h1>...and some text';
+
+		// Loop through array, build HTML block and finally display it on the page
+		let fruits = ["Orange", "Banana", "Apple"];
+		let result = '';
+		for (let i = 0; i < fruits.length; i++) {
+			result += fruits[i] + "<br/>";
+		}
+		document.getElementById("content-2").innerHTML = result;
+	</script>
+	```
+	Note that this example includes the JS code directly in the HTML file. Usually it's preferrable to link to an external javascript file. Try it out!
+
+	Now it's your turn! Update the HTML with the following content:
+
+	* **Add a new HTML element to your document with a specific ID** (e.g. ```div```).
+	* **Create a new function** or duplicate debugAmusementRides() that loops through all amusement rides and **displays the name and the new prices on the website**.
+
+&nbsp;
 
 -----
 
-&nbsp;
 
-### Binding Data to DOM Elements
+### More JavaScript
 
-> "Data visualization is a process of *mapping* data to visuals. (Scott Murray)
+Here we introduce some more advanced JavaScript concepts, that will be very important once we start working with D3. Don't worry, we will reiterate over them with more examples in the next labs in connection with D3.
 
-Similar to our last example we are using basic HTML *paragraphs*, but this time we append a new paragraph for each value in a given array:
+
+#### Functions are Objects
+
+In JavaScript, functions are objects which can be *called*. They take arguments and they return values. But because of their object-like characteristics, they are also just values that can be stored in variables and passed on.
+
+There is an alternative way of defining functions:
 
 ```javascript
-let states = ["Connecticut", "Main", "Massachusetts", "New Hampshire", "Rhode Island", "Vermont"];
+// We assign a function to the variable 'message'
+let message = function(firstName) {
+    return "Hello, I'm " + firstName + ".";
+}
 
-let p = d3.select("body").selectAll("p")
-		.data(states)
-		.enter()
-		.append("p")
-		.text("Array Element");
+// We can call the function to get the expected message
+console.log(message("Sarah"));	// Returns: Hello, I'm Sarah.
 ```
-![D3 - Bind Data 1](./infomvis2022-d3-bind-data-1.png)
-
-
-(1) ```.select("body")``` - Reference to the target container
-
-(2) ```.selectAll("p")``` - Selection representing the elements (paragraphs) we want to create
-
-(3) ```.data(states)``` - Loads the dataset (here: array of strings). While the elements in the array may differ (strings, numbers, objects, other arrays), the data structure that D3's .data() method expects is an array. Each item of the array then gets assigned to each element of the current selection.
-
-Instead of returning just the regular selection, the *data()* operator returns **three virtual selections**:
-
-- **Enter** contains a new placeholder for any missing elements
-- **Update** contains existing elements bound to the data
-- **Exit** contains existing elements that are not bound to data anymore and should be removed
-
-These three methods, along with merge() and join(), are powerful concepts in d3 and open up the floodgates for us to dynamcially handle updates to data. We will learn more about how to use them during Week 4's lab, but in the meantime, feel free to preview this content in Chapter 9 of *D3 - Interactive Data Visualization for the Web*.
-
-There are no "p"-elements on the page so the **enter** selection contains placeholders for all elements in the array. In this and the following examples we will concentrate only on the *enter* selection. You will learn more about the enter-update-exit sequence when we are working with interactive datasets.
-
-(4) ```.enter()``` - Creates new data-bound elements/placeholders
-
-(5) ```.append("p")``` - Takes the empty placeholder selection and appends a paragraph to the DOM for each element.
-
-(6) ```.text("Array Element")``` - Adds a string to each newly created paragraph
-
-
-### Dynamic Properties
-
-The dataset has been loaded and bound to new paragraphs but all the appended elements contain the same content: *"Array Element"*.
-
-If you want access to the corresponding values from the dataset you have to use *anonymous functions*. For better readability, we'll provide an example in ES5 (JavaScipt v.5) first, before we rewrite it slightly using an ES6 arrow function.
+And a more advanced example:
 
 ```javascript
-.text( function (d) { return d; } );
+let person = { firstName: "Sarah", age: 24, profession: "Student" };
+
+// Add a new variable to the class 'person' called 'message'. Store a function in 'message'.
+person.message = function() {
+	return "Hello, I'm " + this.firstName + "!";
+}
+console.log(person); // Returns your new person object
+
+console.log(person.message()); // Returns: Hello, I'm Sarah.
 ```
 
-In this example we have included a JS function in the *text()* operator.
+In these examples, the current *scope* - the environment in which the function executes in - is important.
 
-> **Anonymous Functions**
->
-> A simple JS function looks like the following:
->
-> ```javascript
-> function doSomething (d) {
->   return d;
-> }
-> ```
-> It has a function name, an input and an output variable. If the function name is missing, then it is called an *anonymous function*.
-> If you want to use the function only in one place, an *anonymous function* like the one below is more concise than declaring a function and then doing something with it as two separate steps. We will use them very often in D3 to access individual values and to create interactive properties.
->
-> ```javascript
-> .text( function (d) { return d; } );
-> ```
+> The default scope for executing functions is the *Window Object* which is a browser level object representing the actual browser window/tab. Additionally, we have also used the keyword ```this```. In the global execution context (outside of the function) ```this``` refers to the global object. Inside a function, the value of ```this``` depends on how the function is called.
 
-&nbsp;
+So that means, if you run the function in the person's scope (second example), you can access the first name via ```this```. If you use ```this.firstName``` in a function by itself (e.g. without the scope of the person object) it will give you an error, because your window object has no attribute ```firstName```.
 
-> **Arrow Functions (ES6)**
->
->As mentioned above, ES6 introduced arrow functions, which allow us to write very neat anonymous functions. With regard to the syntax an arrow function replaces the word 'function' with an arrow:
-> ```javascript
-> .text( (d) => { return d; } );
-> ``` 
-> There are tons of implications if you change an anonymous ES5 function to an ES6 function. We encourage you to read up on the differences [here](https://www.w3schools.com/js/js_arrow_function.asp). One useful feature of arrow functions is their default return value if the function only has one statement. This allows us to shorten our anonymous function even more:
-> ```javascript
-> .text( d => d );
-> ``` 
->
+If this still seems confusing to you, you can read up on this on the [MDN documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this). We will also come back to this in later labs.
 
-&nbsp;
-In case you coded along with the example, this is how your website should look now that you've modified ```.text("Array Element")```:
-![D3 - Bind Data 2](./infomvis2022-d3-bind-data-2.png)
 
-In our case we are using the function to access individual values of the loaded array. That is one feature of D3: It can pass array/data elements and corresponding data indices to an anonymous function (which is called for each array element individually).
-Generally in D3 documentation and tutorials, you'll see the parameter ```d``` used for the current data element and ```i```  (or ```index```) used for the index of the current data element. The index is passed in as the second element to the function calls and is optional.
+#### Array Manipulation with higher-order functions
 
-Example for an anonymous function (in ES5) that passes the data element and index. Notice, that we are using ` for the return string rather than ' or " to make use of [template literals](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals):
+JS offers several functions for fast array manipulation. These functions usually rely on concepts from functional programming and can be hard to grasp at the beginning. We will come back to them in more detail later, but below you find a first introduction.
+If you want to read up on higher-order functions, here is a [link](http://eloquentjavascript.net/05_higher_order.html).
+
+The ***filter()*** method creates a new array with the elements that meet a condition implemented by the provided function.
 
 ```javascript
-.text( function(d, i){ 
-    console.log('examining the parameters', d, i);
-	return `element: ${d} at position: ${i}`; 
+// ---- Filter Example 1 - Get all cities except London ----
+
+let cities = ["Vienna", "Paris", "London", "London"];
+
+// Pass a function to cities.filter()
+let filteredCities = cities.filter(checkCity);
+
+// Implementation of passed function
+function checkCity(value) {
+  return value != "London";
+}
+
+filteredCities // Returns: ["Vienna", "Paris"]
+
+console.log(filteredCities);
+
+
+// ---- Filter Example 2 - Get all numbers which are >= 10 and have array indices > 3 ----
+
+let numericData = [1, 20, 3, 40, 5, 60, 7, 80];
+
+// Use an anonymous function in numericData.filter
+// (the anonymous function takes the array element's current value and index as parameters)
+let filteredNumericData = numericData.filter( (value, index) => {
+	return (value >= 10) && (index > 3);
+});
+
+filteredNumericData // Returns: [60, 80]
+console.log(filteredNumericData);
+
+```
+
+For more information on ***filter()*** you can take a look at [this tutorial](http://adripofjavascript.com/blog/drips/filtering-arrays-with-array-filter.html).
+
+
+The ***sort()*** method sorts the items in an array. No new array object will be created during execution.
+
+```javascript
+// ---- Sort Example 1 - Filter array with strings (default sorting) ----
+
+let cities = ["Vienna", "Paris", "London", "Munich", "Toronto"];
+cities.sort();
+cities 	// Returns: ["London", "Munich", "Paris", "Toronto", "Vienna"]
+console.log(cities);
+
+
+// ---- Sort Example 2 - Filter array with objects ----
+// We are specifying a function that defines the sort order
+
+let products = [
+	{ name: "laptop", price: 800 },
+	{ name: "phone", price:200},
+	{ name: "tv", price: 1200}
+];
+
+// Sort ascending by the 'price' property
+products.sort( (a, b) => {
+	return a.price - b.price;
+});
+
+// Sort descending by the 'price' property
+products.sort( (a, b) => {
+	return b.price - a.price;
 });
 ```
-
-Example for an anonymous function (in ES6) that passes the data element and index:
+The ***map()*** method creates a new array with the results of calling a provided function on every element of the original array.
 
 ```javascript
-.text( (d, i) => { 
-    console.log('examining the parameters', d, i);
-	return `element: ${d} at position: ${i}`; 
-});
+// ---- Map Example 1 - Calculate the square root ----
+
+let numericData = [1, 4, 9];
+let roots = numericData.map(Math.sqrt);
+
+roots	// Returns: [1, 2, 3]
+
+
+// ---- Map Example 2 - Double the prices ----
+
+let products = [
+	{ name: "laptop", price: 800 },
+	{ name: "phone", price:200},
+	{ name: "tv", price: 1200}
+];
+
+let expensiveProducts = products.map(doublePrice);
+
+function doublePrice(elem){
+	elem.price = elem.price * 2;
+	return elem;
+}
+
+expensiveProducts // Returns: [{ name: "laptop", price: 1600 }, { name: "phone", price:400}, { name: "tv", price: 2400}]
 ```
 
-Since it is still a regular function, it doesn't have to be just a simple return statement. We can use if-statements or loops to eventually return non-trivial values.
+*You will learn more about other useful array manipulation methods (e.g. ```join()```, ```reduce()```, ...) in our next labs.*
+
+
+&nbsp;
+-----
+
+
+### Debugging
+
+You've learned about how to use your browser's built-in web developer tools
+. However, so far you've only learned how to use these tools to inspect the DOM and analyze the tree
+ structure of HTML elements. Today, we want you to start using the **console** as well as the
+  **sources** panel of your dev tools. 
+   
+#### The console 
+   
+You've already used the console extensively in activity I. Every browser has a debugging console
+, which is a command line interface in your browser that can execute snippets
+   of code. JavaScript comes with a (window) console object, that allows you to interact with
+    this debugging console. The most prominent amongst many [methods](https://www.w3schools.com/jsref/obj_console.asp) is the .log() method that writes a message to the console. The reason why console.log
+    () is such a prominent line in JavaScript is because it allows you to double check that your variables and data structures are indeed
+       what you expect them to be - you can think of it like a sanity-check print-statement in
+        python. 
+     
+#### The sources panel 
+
+While for smaller architectures, it is very often more practical to use console.log()
+ to debug your code and get to the root of your bug, there is a much more powerful tool that
+  comes with the dev tools, which is particularly helpful when you first need to get an overview
+   and don't know where to start debugging. In your sources panel, you cannot only view files
+   , but i.a. also pause and explore your code using breakpoints and use **watch** to track
+    how variables change and get updated while running through your code breakpoint by breakpoint.
+
+![Breakpoints](./sources_01.png)
+
+
+How to get set up breakpoints and explore using watch:
+- first, go to the sources panel
+- then open the js file that contains the code you want to debug (by clicking on it)
+- next, click on the line number where you would want to place a break - a blue arrow will appear
+ (see screenshots)
+- set as many stops as you want/as necessary
+- reload the page
+- Your debugger is now running. A message in a yellow box overlaying your browser window saying
+ "Paused in debugger" is indicating that. Also, the navigation arrows of your breakpoint tool are
+  now no longer grayed out and ready to be used
+ - next, you can either use the scope tab to explore the behavior of all local and global
+  variables while going through the breakpoints or
+- you could switch to the **Watch** tab and just name the variables you want to monitor
+- in order to watch just the variables you're interested, you can just start typing the name of the
+ variable and the dev tools will autocomplete the name (see screenshots)
+- the listed variables will now reflect the state of the webapp at the particular breakpoint.
+
+![Watch](./sources_02.png)
+
+
+-----
+
+## Activity III
+
+This activity summarizes most of the learned concepts of the first two labs. It includes different aspects of HTML, CSS and JS and will result in a bar chart visualization.
+
+We will provide a template with a basic *HTML structure*, a *dataset* (stored in a JSON array) and a *complete JS function* that renders a bar chart with D3. Your primary tasks are data filtering and controlling the workflow. In the following labs we will introduce D3 and show you how to create these visualizations yourself.
+
+**Data:**
+
+- The dataset (provided with the code template) consists of 60 attractions around the world. Each attraction has the following properties:
+	-  ```Location``` *(name, city and country)*
+	-  ```Category``` *(theme park | water park | museum)*
+	-  ```Visitors``` *(annual visitors in 2013)*
+	-  ```Entry``` *(paid | free)*
+- The JSON array with objects is stored in the global variable ```attractionData```.
+- Data Source: TEA/AECOM 2013 Theme Index and Museum Index
+
+1. **Download template for 'week01_lab_part2 js', unzip it and open it as a new project in Webstorm:**
+
+	[download week-01_lab_part2.zip](https://surfdrive.surf.nl/files/index.php/s/7yZvgpOe7AuTVQX)
+
+2. **Familiarize yourself with the provided HTML document: ```index.html```**
+
+	Look at the source code, its HTML elements, and which files (JS, CSS) are included.
+
+3. **Array sorting and using the Chrome DevTools**
+
+	Open the JS file ```week01_lab_part2.js``` (*js* folder). Most of the tasks you need to complete should be implemented in the function: *dataFiltering()*.
+
+	We have included a template of the function, and have created a local variable ```attractions``` from the global variable and we have called the function right before. You should work with the local variable ```attractions``` - don't override the global one.
+
+	In this exercise we're interested in finding the attractions with the most visitors. We've added some code that sorts the ```attractions``` array by the number of advisors. However, if you look at the console log that prints the sorted array, you'll notice that the sorting isn't working.
+
+	**We'll use the Chrome DevTools to debug this issue.**
+		
+	- Open the Chrome Developer Tools pane (View -> Developer -> Developer Tools)
+	- Click on the `Sources` tab . You'll notice that the HTML/JS/CSS files you're currently
+	 working on are listed here. 
+	 - Click on the ***week01_lab_part2.js*** file.
+        ![Watch](./week-01_lab_sources_panel.png)
+
+	- From this file view, we are able to set [breakpoints](https://developer.chrome.com/docs/devtools/javascript/breakpoints/) that let you step through your code as it executes, which is an incredibly powerful debugging tool. **Add breakpoints on lines 14 and 15 as shown below and refresh the page.**
+        ![Watch](./week-01_lab_breakpoint.png)
+
+	- You'll notice now that your code stops executing at line 14. If you hover over the
+	 ```attractions```, you can view the value assigned to the variable.
+	- If you press the blue resume button, you'll see that the execution jumped down to line 15
+	, which is the next breakpoint. By hovering over ```a.visitors``` you can see that the value is undefined. This is our bug.
+	- You can also step forward line-by-line, disable all breakpoints, and step into, out of, and
+	 over functions through the buttons at the top right of the debugger by the resume button.
+	- If you switch to the Console tab and type in ```a``` and pressing enter, you'll notice you
+	 can also interact with the local variables from the console. This is a good tool for testing out code without having to reload the page.
+	- From the current value of ```a``` or ```b```, you'll notice there's a property that holds
+	 the number of visitors that's capitlized slightly differently than it is in line 15. This is the bug!
+	- Disable your breakpoints by clicking on them. Now go back to WebStorm and update your code
+	  so that visitors is capitalized correctly. When you refresh the page the log that prints the array should show that it's sorted.
+
+4. **Filter the array**
+	We want to show the *top five global attractions* with the most annual visitors in a bar chart. There are 60 attractions in the dataset, so you have to create a new array or modify the variable ```attractions```. *Suggestion: Filter your sorted array to get the first five rows.*
+
+5. **Call the function: renderBarChart(attractions)**
+
+	- This function will automatically render a bar chart with the top attractions in the div-container with the id: ```#chart-area```.
+	- You must include a JSON array with attractions as a parameter (array length: 5)
+	- If there is a problem, check the web console and try to debug your code (e.g., by using ```console.log()``` statements)
+	- If you are still in class, don't hesitate to ask TFs for help! Otherwise, you can use Piazza or office hours!
+
+6. **Extend array filtering**
+
+	As you might have seen already, there is a *select-box* in the HTML document. You can select different categories but right now, nothing happens.
+
+	In the next task you should call a function *dataManipulation()* if someone changes the select-box and then, inside the function, filter the attractions by the selected category:
+
+	* Add the attribute ```onchange="dataManipulation()"``` to the select-box (in the HTML file). The function ```dataManipulation()``` will be automatically called whenever the user changes the value of the select box. However, you will need to create that function!
+	* In your JS file you can use the following code snippet to get the selected category. Make sure to change "SELECT-ID" to the ID of the select-box.
+
+		```javascript
+		let selectBox = document.getElementById("SELECT-ID");
+		let selectedValue = selectBox.options[selectBox.selectedIndex].value;
+		```
+		Make sure this part is working, by printing out *selectedValue* in the console whenever the select-box selection has changed, before continuing.
+
+	* Before searching for the top attractions and calling *renderBarChart()*: check if the selected category is "all", otherwise filter the attractions by category.
+
+	*If everything has been configured correctly, the bar chart will be updated automatically after selecting a category.*
 
 &nbsp;
 
-### HTML attributes and CSS properties
+-----
 
-As already mentioned earlier, we can get and set different **properties** and **styles** - not only the textual content. This becomes very important when working with SVG elements.
+#### Bonus Activity (optional!)
 
-*Example (1) - Add paragraphs and set properties*
+- **Add custom styles (CSS)**
 
-```javascript
-let states = ["Connecticut", "Main", "Massachusetts", "New Hampshire", "Rhode Island", "Vermont"];
-
-// Change the CSS property background (lightgray)
-d3.select("body")
-	.style("background-color", "#EEE");
-
-// Append paragraphs and highlight one element
-d3.select("body").selectAll("p")
-	.data(states)
-	.enter()
-	.append("p")
-	.text(d => d)
-	.attr("class", "custom-paragraph")
-	.style("color", "blue")
-	.style("font-weight", d => {
-		if(d === "Massachusetts")
-			return "bold";
-		else
-			return "normal";
-	});
-```
-
-- We use D3 to set the paragraph content, the HTML class, the font-color and as the last property, the font-weight which depends on the individual array value
-- If you want to assign specific styles to the whole selection (e.g. font-color: blue), we recommend you to define an HTML class (*"custom-paragraph"* in our example) and add these rules in an external stylesheet. That will make your code concise and reusable.
-
-*Result:*
-![D3 - Bind Data 3](./infomvis2022-d3-bind-data-3.png)
-
-
-
-*Example (2) - Add SVG rectangles and set properties*
-
-```javascript
-let numericData = [1, 2, 4, 8, 16];
-
-// Add svg element (drawing space)
-let svg = d3.select("body").append("svg")
-	.attr("width", 300)
-	.attr("height", 50);
-
-// Add rectangle
-svg.selectAll("rect")
-	.data(numericData)
-	.enter()
-	.append("rect")
-	.attr("fill", "red")
-	.attr("width", 50)
-	.attr("height", 50)
-	.attr("y", 0)
-	.attr("x", (d, i) => i * 60)
-```
-- We have appended SVG elements to the DOM tree in our second example. This means that we had to create the SVG drawing area first. We did this with D3 and saved the selection in the variable ```svg``` (in case you wonder why the ```d3``` object is missing in the second statement).
-- It is crucial to set the SVG coordinates. If we don't set the *x* and *y* values, all the rectangles will be drawn on the same position at (0, 0). By using the index - of the current element in the selection - we can create a *dynamic x property* and shift every newly created rectangle 60px to the right.
-
-*Result:*
-![D3 - Bind Data 4](./infomvis2022-d3-bind-data-4.png)
-
+	We have included *Bootstrap* and a couple of CSS rules to style the bar chart. Add a new stylesheet or modify ```style.css``` to create an individual design.
+	To change the style of the D3 components you will have to add new elements to your css. D3 uses ```<svg>``` tags in the DOM, and you might want to look up properties like *fill* or *stroke*. We've also provided code for you to implement hover interactions in the form of a tooltip, which is classed ```tooltip``` in the DOM. In order to enable this functionality, you must add a placeholder div of id ```tooltip``` to your HTML file. Inside your newly minted div, create a span of id ```value```. We encourage you to play around with adding more content to the tooltip, as well as changing the tooltip's styling in CSS.
+&nbsp;
 
 -----
 
-#### Activity II
-
-1. **Navigate to 'activity_2' and create a new D3 project inside the folder.**
-
-2. **Append a new SVG element to your HTML document with D3** (Width: 500px, Height: 500px)
-
-3. **Draw circles with D3**
-
-   Append a new **SVG circle** for every object in the following array:
-
-   ```javascript
-   let sandwiches = [
-        { name: "Thesis", price: 7.95, size: "large" },
-        { name: "Dissertation", price: 8.95, size: "large" },
-        { name: "Highlander", price: 6.50, size: "small" },
-        { name: "Just Tuna", price: 6.50, size: "small" },
-        { name: "So-La", price: 7.95, size: "large" },
-        { name: "Special", price: 12.50, size: "small" }
-   ];
-   ```
-
-4. **Define dynamic properties**
-
-	- Set the x/y coordinates and make sure that the circles don't overlap each other
-	- Radius: *large sandwiches* should be twice as big as small ones
-	- Colors: use two different circle colors. One color (```fill```) for cheap products < 7.00 USD and one for more expensive products
-	- Add a border to every circle (SVG property: ```stroke```)
-
-   *The result might look like the following:*
-   ![D3 - Result Activity 2](./infomvis2022-d3-activity-2.png)
+In the last activity you have implemented a function which reacts to the user input (changing a select-box value) and updates the chart immediately. So that means, you have done everything, apart from drawing the bars, to create an interactive data visualization. Next week, we will start with the JS library D3 and you will learn how to draw these SVG charts yourself.
+&nbsp;
 
 -----
+
+#### Submission of lab
+
+Congratulations, you have now completed all activities of the first Lab.
+
+*See you next week!*
+
+Please include the code of your completed activity 3 in your homework submission. Read the homework
+ documentation for more detail.
 
 &nbsp;
 
-
-### Loading external data
-
-Instead of typing the data in a local variable, which is also only convenient for small datasets,
-we can use d3 fetches to load data from external files using promises. The D3 built-in methods make it
-easy to load JSON, CSV and other files.
-
-You should already be familiar with the JSON format from the previous lab and you have probably
-worked with CSV files in the past, too.
-
-> **CSV (Comma Separated Values)**
->
-> Similar to JSON, CSV is a file format which is often used to exchange data. Each line in a CSV file represents a table row and as the name indicates, the values/columns are separated by a comma.
->
-> In a nutshell: The use of the right file format depends on the data - JSON should be used for hierarchical data and CSV is usually a proper way to store tabular data.
-
-We'll store the same sandwich price information in a CSV file. Most of the time CSV files are generated by exporting data from other applications, but for this example you should manually copy the data shown below into a blank file and save it as .CSV:
-
-*sandwiches.csv (create this file in a subfolder of your project named "data")*
-
-```csv
-name,price,size
-Thesis,7.95,large
-Dissertation,8.95,large
-Highlander,6.50,small
-Just Tuna,6.50,small
-So-La,7.95,large
-Special,12.50,small
-```
-
-By calling D3 methods like *d3.csv()*, *d3.json()*, *d3.tsv()* etc. we can load external data resources in the browser:
-
-```javascript
-d3.csv("data/sandwiches.csv").then(function(data) {
-  console.log(data); // [{name: "Thesis", price: "7.95", size: "large"},..]
-});
-```
-
-> **Promises & Callbacks**
->
-> *What are promises and why are they so useful?* → The page should be visible while data is loading and scripts that do not depend on the data should run immediately, while scripts that do depend on the data should only run once the data has been loaded! Promises allow for exactly that. The browser doesn't have to wait for the data to load but can continue to interpret the code because it can now rely on the promise that it'll get the data eventually.
->
-> *OK, but what about callbacks. Why do I need those?* A callback function is a function that is passed to another function. It can be anonymous or named. We have used them multiple times before, for example to set the content:
->
-> ```javascript
-> .text(d => d)
-> ```
-> The *text()* method executes the anonymous callback function we have passed to it. That means, we don't call the anonymous function directly and it is also not getting executed immediately. It is invoked after some kind of event and usually it is "called back" once its parent function is complete.
->
-
-
-*Updated main_presentation.js*
-
-```javascript
-d3.csv("data/sandwiches.csv").then(function(data) {
-  console.log(data); // [{name: "Thesis", price: "7.95", size: "large"},..]
-});
-console.log(`look at that: The browser already interpreted this line, while it's still waiting for the data to load`)
-```
-
-*The result below shows that the execution order is different than what you might have expected:*
-
-The callback function - the inner function of *d3.csv()* - is called only after the dataset is loaded completely to browser memory. In the meantime other scripts are executed.
-
-![D3 - Data Loading 1](./infomvis2022-d3-load-data-1.png)
-
-
 -----
 
-#### Activity III
 
-1. **Navigate to 'activity_3' and create a new D3 project inside the folder.**
+**Resources**
 
-   *notice that there's already a folder called 'data' that contains your dataset for this exercies, i.e. `cities.csv`*
-
-2. **Use D3 to load the CSV file**
-
-   Write the data to the *web console* and inspect it in your browser:
-
-	- In which format is the information stored now?
-	- Which properties are available?
-	- Check the types of the variables in the console
-
-3. **Prepare the data**
-
-   *You might have noticed that each value of the CSV file is stored as a string, including numerical values.*
-
-	- Convert all numerical values to *numbers*. (Otherwise you might see unexpected behavior when making calculations.)
-	- We recommend iterating over each row to convert strings into floats. You can use this neat line of code:
-
-    ```javascript
-            d.age = +d.age;
-   ```
-
-	- Formerly, you had to write an actual loop to iterate over each element in the array, i.e. each row in the csv. However, ever since switching to promises in d3 v5, [d3.csv](https://github.com/d3/d3-fetch) also allows for a callback during the process of loading the csv row by row. Thus, Mike Bostock, calls this an 'optional row conversion function':
-
-   ```javascript
-   d3.csv(url, (row) => {
-   		// convert
-   		row.value = +row.value
-   		return row
-   }).then( (data) => {
-   	// check out the data and do whatever you want with it
-   		console.log(data)
-   })
-   ```
-
-4. **Filter the dataset**
-
-   We are only interested in cities that are part of the *European Union (EU)*. In the remainder of the activity use the filtered dataset.
-
-5. **Append a new paragraph to your HTML document**
-
-   Count all elements in the filtered dataset and use D3 methods to write the result (i.e., the number of EU countries) to your webpage.
-
-5. **Draw one SVG circle for each row in the filtered dataset**
-
-	- All the elements (drawing area + circles) should be added dynamically with D3
-	- SVG container: width = 700px, height = 550px
-	- Use the x/y coordinates from the dataset to position the circles
-
-7. **Dynamic circle properties**
-
-   Change your default radius to a data-dependent value:
-
-	- The radius should be **4px** for all cities with a population lower than 1.000.000.
-	- The radius for all the other cities should be **8px**.
-
-8. **Assign labels with the names of the European cities**
-
-	- Use the *SVG text* element
-	- All the elements should have the same class: ```city-label```
-	- The labels should be only visible for cities with a population equal or higher than 1.000.000. You can use the SVG property ```opacity``` to solve this task.
-
-9. **Styling**
-
-   *Create a new external stylesheet if you have not done it yet.*
-
-   Add proper styles to your webpage but include at least these CSS rules for the class ```city-label```:
-
-	- Font size = 11px
-	- Text anchor = middle
-
-*Your result should look similar to this screenshot:*
-![Activity 3 Result](./infomvis2022-activity-3.png)
+- Chapter 3 (p. 36-52) in *D3 - Interactive Data Visualization for the Web* (Second Edition) by Scott Murray
+- [https://developer.mozilla.org/en-US/docs/Web](https://developer.mozilla.org/en-US/docs/Web)
+- [http://dataviscourse.net/2015/lectures/lecture-javascript/](http://dataviscourse.net/2015/lectures/lecture-javascript/)
+- [http://hangar.runway7.net/javascript/guide](http://hangar.runway7.net/javascript/guide)
 
 
-*Important notice: This example is not intended to be a best practice example of how to work with D3 scales. It was designed to help you to get a better understanding of different basic concepts in D3.*
-
-Next week you will learn how to create real scales for different types of data, you will work with more flexible size measurements and you will learn how to use D3 axes in your visualizations.
-
-Later in this course you will also learn how to create interactive maps.
-
-&nbsp;
-	
------
-
-#### Bonus Activities (optional!)
-
-- Add a **D3 click event listener**.
-
-  The d3 method .on() adds or removes a listener to each selected element for the specified event typenames.
-  The typenames is a string event type, such as click, mouseover, or submit. When a specified event is dispatched
-  on a selected element, the specified listener will be evaluated for the element, being passed the current event
-  (event) and the current datum (d), with this as the current DOM element (event.currentTarget). In order to have access
-  to this, however, we cannot use arrow functions. Have a look at this event listener:
-
-    ```javascript
-    .on("click", function(event, d){
-        console.log('check out what you have access to', event, d, this)
-    });
-    ```
-
-  Of course, you can do more than just writing something to the console here. For example, you could call other functions and pass along
-  some information from the current selection.
-
-
-- Change the **hover style** of the SVG circles.
-
-&nbsp;
-
-
------
-
-#### Submission of lab (only activity_3)
-
-Congratulations, you have now completed the activities of Lab 2!
-
-Please upload the code of your completed lab (only activity_3) on Surfdrive together with this week's homework. More instructions in the homework manual!
-
-
------
