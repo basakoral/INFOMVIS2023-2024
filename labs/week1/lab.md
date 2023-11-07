@@ -8,7 +8,7 @@ Our labs are designed as work-books in the style of a self-guided tutorial. We a
 
 This week, you can work on the lab on your own. Usually, you will work on the lab in class and with your group. 
 
-We embrace the concept of learning by doing. To truly master new programming and development skills, you have to spend the time to figure things out and to try different approaches and examples.
+We embrace the concept of learning by doing. To truly master new programming and development skills, you have to spend the time to figure things out and try different approaches and examples.
 However, you are not alone in this! INFOMVIS 2023-2024 staff is available for any questions that pop up along the way. We encourage you to pester them with questions, but at the same time, make sure that you come to the lab prepared and ready to code!
 
 ### Learning Objectives
@@ -82,7 +82,7 @@ A comprehensive and well structured list of HTML elements can be found at [MDN](
 
 #### HTML Boilerplate
 
-Every HTML5 document requires a little bit of boilerplate code that you should just copy and past every time you create a new file. A boilerplate is a piece of code that is usually copied with little or no alteration, much like a template, to speed up the creation of new files. In the case of HTML5 this includes several HTML tags (e.g. \<head>, \<html>, ...) that don't have visual equivalents on the website, but that are necessary to define the document's metadata.
+Every HTML5 document requires a little bit of boilerplate code that you should just copy and paste every time you create a new file. A boilerplate is a piece of code that is usually copied with little or no alteration, much like a template, to speed up the creation of new files. In the case of HTML5 this includes several HTML tags (e.g. \<head>, \<html>, ...) that don't have visual equivalents on the website, but that are necessary to define the document's metadata.
 
 Make sure to get familiar with this structure (notice that WebStorm pre-populates new HTML files automatically!):
 
@@ -105,7 +105,7 @@ Classes and IDs are extremely helpful for selecting specific HTML elements. Your
 
 (1) ```<div>Interactive Data Visualization</div>```
 
-In the above HTML snippet, the div-element has no attributes, so the only possible way to identify the element is by its tag name *div*. If there are multiple div-tags in one page, which happens frequently, selecting just the above div element becomes a problem.
+In the above HTML snippet, the div-element has no attributes, so the only possible way to identify the element is by its tag name *div*. If there are multiple div tags on one page, which happens frequently, selecting just the above div element becomes a problem.
 
 (2) ```<div id="book-123">The Value of Visualization</div>```
 
@@ -113,7 +113,7 @@ To solve this problem, we can give the element a unique ID: *book-123*. However,
 
 (3) ```<div class="book content">Visualization Analysis and Design</div>```
 
-Any attribute or styling information that needs to be applied to multiple elements on a page should be done with a *class*. In the above example, we have assigned the div element to the class *book*, that allows us to select all HTML containers of the type *book*. At the same time, we have assigned the div element to the class *content*.
+Any attribute or styling information that needs to be applied to multiple elements on a page should be done with a *class*. In the above example, we have assigned the div element to the class *book*, which allows us to select all HTML containers of the type *book*. At the same time, we have assigned the div element to the class *content*.
 
 Elements can be assigned multiple classes, simply by separating them with a space.
 
@@ -150,7 +150,7 @@ Elements can be assigned multiple classes, simply by separating them with a spac
 
 ### The DOM
 
-The Document Object Model (DOM) is a programming interface for HTML, XML and SVG documents. It provides a hierarchical structured representation of the document (a tree) and it defines a way that the structure can be accessed from programs so that they can change the document structure, style and content. Or in other words, it is a model that the browser generates, when it parses the HTML document.
+The Document Object Model (DOM) is a programming interface for HTML, XML and SVG documents. It provides a hierarchically structured representation of the document (a tree) and it defines a way that the structure can be accessed from programs so that they can change the document structure, style, and content. Or in other words, it is a model that the browser generates, when it parses the HTML document.
 
 The difference between HTML and DOM should be more understandable after the following interactive exercise.
 
@@ -160,7 +160,7 @@ The difference between HTML and DOM should be more understandable after the foll
 
 ##### Web Developer Tools
 
-Every modern-day web browser has built-in *developer tools* that expose the current state of the DOM and help us to better understand what is going on. In this exercise we will use the *Web Inspector* to view the DOM tree of our document.
+Every modern-day web browser has built-in *developer tools* that expose the current state of the DOM and help us to better understand what is going on. In this exercise, we will use the *Web Inspector* to view the DOM tree of our document.
 
 
 1. **Create a new folder ```js``` in your project, download the file ```dom-example.js``` and save it in your newly created folder**
@@ -192,7 +192,7 @@ Every modern-day web browser has built-in *developer tools* that expose the curr
 
 	We can see something that looks like the source code of the HTML document that you wrote in your editor. Some tags are probably collapsed. Actually, you are **not** viewing the raw content of your HTML document. What you are seeing is the visual representation of the DOM tree (after all scripts have run and potentially modified the original HTML source)!
 
-	The HTML you write is parsed by the browser and turned into the DOM. In simple cases this will look like your raw HTML, but if any JavaScript code has been executed, the current DOM may be different, as JavaScript commands can add, remove, and adjust the DOM dynamically.
+	The HTML you write is parsed by the browser and turned into the DOM. In simple cases, this will look like your raw HTML, but if any JavaScript code has been executed, the current DOM may be different, as JavaScript commands can add, remove, and adjust the DOM dynamically.
 
 5. **Update the DOM: Click on the previously created button!**
 
@@ -215,9 +215,9 @@ Every modern-day web browser has built-in *developer tools* that expose the curr
 
 ### Cascading Style Sheets (CSS) - *Making things pretty!*
 
-With HTML you define the structure and content of the page and with CSS you set its style - things like fonts, colors, margins, backgrounds etc.
+With HTML you define the structure and content of the page and with CSS you set its style - things like fonts, colors, margins, backgrounds, etc.
 
-A stylesheet will usually consist of a list of CSS rules that are inserted either in a ```<style>``` block in your HTML header, or, more often, stored in an external file and included via the below line of code. Make sure to include an external style sheet always in the HTML header (inside the ```<head></head>``` elements of your HTML file).
+A stylesheet will usually consist of a list of CSS rules that are inserted either in a ```<style>``` block in your HTML header or, more often, stored in an external file and included via the below line of code. Make sure to include an external style sheet always in the HTML header (inside the ```<head></head>``` elements of your HTML file).
 
 	<link rel="stylesheet" href="css/style.css">
 
@@ -240,9 +240,9 @@ A simple rule in CSS can look like the following:
 
 If you are searching for an exhaustive list of style properties we recommend [Mozilla's Developer Platform](https://developer.mozilla.org/en-US/docs/Web/CSS) or [w3schools.com](http://www.w3schools.com/CSS/). Some CSS properties are needed quite often, so you should try to memorize them.
 
-In the above example we have assigned our CSS rule to all div containers but if we want to style specific elements we can use the selectors *id* and *class*.
+In the above example, we have assigned our CSS rule to all div containers but if we want to style specific elements we can use the selectors *id* and *class*.
 
-As you can see in the example below, IDs are preceded with a hash mark (*#article-1*) and class names are preceded with a period (*.error*). You can also use descendant selectors to address nested tags (*.article .warning*).
+As you can see in the example below, IDs are preceded with a hash mark (*#article-1*), and class names are preceded with a period (*.error*). You can also use descendant selectors to address nested tags (*.article .warning*).
 
 
 *Example:*
@@ -288,7 +288,7 @@ As you can see in the example below, IDs are preceded with a hash mark (*#articl
 #### Activity 3
 
 
-In this activity you will use CSS to add custom styles to your HTML file.
+In this activity, you will use CSS to add custom styles to your HTML file.
 
 
 1. **Create an external CSS file ```style.css``` and include it in your HTML document ```basics.html```**
@@ -308,13 +308,13 @@ In this activity you will use CSS to add custom styles to your HTML file.
 
 	If you are working on a more sophisticated problem it can be very useful to analyze your CSS rules with the *Web Inspector*. The CSS styles in the right panel match the currently selected DOM element.
 
-	- Click on different lines in the *Elements*-panel to see the respective CSS properties. The rules are collected from inline styles, attached stylesheets and user agent stylesheets. User agent stylesheets are the browser's default properties, such as font-size or margin.
+	- Click on different lines in the *Elements*-panel to see the respective CSS properties. The rules are collected from inline styles, attached stylesheets, and user agent stylesheets. User-agent stylesheets are the browser's default properties, such as font size or margin.
 
 	- Be mindful that rules that are specified later in a CSS file generally override rules that were specified earlier in the file, but not always. The true logic has to do with the specificity of each selector. The *div.content* selector would override the *div* rule even if it were listed first, simply because it is a more specific selector.
 
 		The order of the CSS rules in the right panel helps you to identify the importance of the individual styles.
 
-	- Similar to the DOM tree, you can also modify, add and remove CSS rules and properties in the web inspector. This is a quick and easy way to try different styles directly in the browser (debugging), but keep in mind that the changes will be discarded if you reload the page. Try it out and modify your CSS in the browser!
+	- Similar to the DOM tree, you can also modify, add, and remove CSS rules and properties in the web inspector. This is a quick and easy way to try different styles directly in the browser (debugging), but keep in mind that the changes will be discarded if you reload the page. Try it out and modify your CSS in the browser!
 
 	- If you include a specific color in your CSS properties the *Web Inspector* shows you a small button, linked to a color picker. This little tool can help you to find the desired color codes. Add a new CSS rule in the *Web Inspector* and change the font color of the headline!
 
@@ -326,7 +326,7 @@ In this activity you will use CSS to add custom styles to your HTML file.
 
 Rather than coding from scratch, frameworks enable you to utilize ready-made blocks of code to help you get started. They give you a solid foundation for what a typical web project requires and usually they are also flexible enough for customization.
 
-In INFOMVIS2022 we use ***Bootstrap*** as an example open source HTML, JS and CSS framework. It is one of the most widely used frameworks, it is easy to understand and it provides a great documentation with many examples.
+In INFOMVIS2022 we use ***Bootstrap*** as an example open source HTML, JS, and CSS framework. It is one of the most widely used frameworks, it is easy to understand and it provides great documentation with many examples.
 
 The question whether a framework can be useful depends on the individual project and on the developer. Therefore, it is up to you to decide if you want to use it in your homeworks or projects.
 
@@ -378,7 +378,7 @@ In the last activity you will download and include the Bootstrap JavaScript libr
 
 5. **Bootstrap Grid**
 
-    Let's make use of bootstrap, shall we? Once of the most basic but at the same time most useful feature is bootstrap's grid system. Here's the link to the documentation: [https://getbootstrap.com/docs/5.2/layout/grid/](https://getbootstrap.com/docs/5.2/layout/grid/)
+    Let's make use of bootstrap, shall we? One of the most basic but at the same time most useful features is bootstrap's grid system. Here's the link to the documentation: [https://getbootstrap.com/docs/5.2/layout/grid/](https://getbootstrap.com/docs/5.2/layout/grid/)
 
     Below, you will find an example of the bootstrap grid. It is important to understand the hierarchy that the grid system uses: A div-container, i.e. ```<div class="container">``` serves as a parent for one or more div-rows, i.e. ```<div class="row">```, while a div-row serves as the parent for multiple div-columns, i.e. ```<div class="col">```.
     ```
@@ -458,6 +458,10 @@ Please submit your completed lab 1 together with your homework submission (a sin
 
 - Chapter 3 (up to page 36) in *D3 - Interactive Data Visualization for the Web* (Second Edition) by Scott Murray
 - [https://developer.mozilla.org/en-US/docs/Web](https://developer.mozilla.org/en-US/docs/Web)
+- [https://www.w3schools.com/](https://www.w3schools.com/)
+- [https://observablehq.com/@d3](https://observablehq.com/@d3)
+
+  
 
 
 
