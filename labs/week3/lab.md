@@ -1,5 +1,5 @@
 
-# Week 02 | Lab
+# Week 03 | Lab
 
 ### Learning Objectives
 
