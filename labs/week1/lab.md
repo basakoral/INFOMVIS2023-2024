@@ -447,9 +447,7 @@ These bonus activities are not required, but we recommend that you try them!
 
 You have now completed the activities of the first part of Lab 1 and should have a basic understanding of HTML, CSS, and how you can style your webpage based on CSS selectors and libraries like Bootstrap. This knowledge will enable you to complete the first part of Homework 1!
 
-Please submit your completed lab 1 together with your homework submission on SURFdrive. 
-
-If you have worked on the lab with a pair partner, please specify your partner's name as a comment at the top of your html file.
+Please submit your completed lab 1 together with your homework submission (a single .zip file) via email (subject: INFOMVIS2023-Week01-Submission) e.oral@uu.nl. 
 
 &nbsp;
 
