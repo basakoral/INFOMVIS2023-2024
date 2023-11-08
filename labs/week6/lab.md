@@ -10,7 +10,7 @@
 ### Prerequisites
 
 - You have read and **programmed** along with:
-  - [infomvis-lab5-preReading.pdf](https://surfdrive.surf.nl/files/index.php/s/s20hRwdEil70DGx/infomvis-lab5-preReading) (under week-05 in surfdrive)
+  - [infomvis-lab5-preReading.pdf](./infomvis-lab5-preReading.pdf) (under week-05 in surfdrive)
   - [https://www.w3schools.com/js/js_classes.asp](https://www.w3schools.com/js/js_classes.asp) (repetition of JS classes with more examples)
   - [Scope and _this_ in JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this)
 
