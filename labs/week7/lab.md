@@ -16,11 +16,9 @@ In this lab we want to guide you through creating a highly customized visualizat
 
 We give you pointers, but part of this lab is figuring these things out on your own. Do not hesitate to ask for help if you are stuck!
 
-Also, be aware this week's lab is split in two parts: (1) Custom visualizations and (2) rendering custom map visualizations. It will be a longer lab, but this week does not have a homework!
-
 &nbsp;
 
-# Part 1: Visualization Goal: Padgett's Florentines Families
+# Visualization Goal: Padgett's Florentines Families
 
 In this problem set you will work primarily with network data. The data sources about marriage and business ties among Renaissance Florentine families were originally collected by Padgett [1] and then made available to the public.
   The dataset includes important families that were involved in a struggle for political control in Florence around 1430. With the collected data, researchers can analyze the influence of individual families and, in addition, can get a better understanding of the impact of these different kinds of relationships.
