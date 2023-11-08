@@ -1,7 +1,5 @@
 # Week 07 | Lab
 
-# Lab 7
-
 ## Learning Objectives
 
 - Know how to create custom visualizations with D3
