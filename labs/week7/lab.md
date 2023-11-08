@@ -387,8 +387,6 @@ Every time someone updates the csv on the server your visualization will show al
 
 &nbsp;
 
----
-
 **Resources**
 
 - Custom visualizations with D3: [http://jsdatav.is/chap07.html#creating-a-unique-visualization](http://jsdatav.is/chap07.html#creating-a-unique-visualization)
