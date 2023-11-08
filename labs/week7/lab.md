@@ -1,679 +1,392 @@
 # Week 07 | Lab
 
-### Learning Objectives
+# Lab 7
 
-- Understand the concept of D3 layouts and be able to use D3 layouts for advanced visualizations
-- Have a basic understanding of geographical projections
-- Know how to load multiple files sequential and parallel
-- Know how to convert geodata to screen coordinates with D3 in order to create interactive maps
+## Learning Objectives
 
-### Prerequisites
+- Know how to create custom visualizations with D3
+	- Set up a completely new project without templates
+	- Know how to use data APIs
+	- Know how to use the Fetch API, i.e. `fetch()`
+	- Consolidate the official documentation and external materials
+	- Apply the learned web development skills and your deep understanding of D3 to realize your own ideas and to
+	implement unique visualizations (apart from bar and area charts)
 
-- You have read and **programmed** along with chapter 13, and 14 (p. 259-280) in _D3 - Interactive Data Visualization for the Web_.
-- Optional reading: p. 281-320 in _D3 - Interactive Data Visualization for the Web_.
 
-### Summary
+***Important Note:***
+In this lab we want to guide you through creating a highly customized visualization in D3, without using typical building blocks like bar charts or line charts. That means that in this lab you will have to deal not just with writing correct D3 syntax, but also with figuring out *in what way* you can implement a certain feature.
 
-In this lab, you will learn how to use D3 layout methods to implement more complex svg shape elements (in contrast to rect or circle elements).
-After drawing an interactive pie-chart as a warm-up, the main task of the lab will be to create an interactive choropleth map.
+We give you pointers, but part of this lab is figuring these things out on your own. Do not hesitate to ask for help if you are stuck!
 
-### Useful links for this week's lab
+Also, be aware this week's lab is split in two parts: (1) Custom visualizations and (2) rendering custom map visualizations. It will be a longer lab, but this week does not have a homework!
 
-- Comprehensive overview for [SVG Elements and Attributes](https://oreillymedia.github.io/Using_SVG/guide/markup.html)
-- https://github.com/d3/d3-geo
+&nbsp;
+
+# Part 1: Visualization Goal: Padgett's Florentines Families
+
+In this problem set you will work primarily with network data. The data sources about marriage and business ties among Renaissance Florentine families were originally collected by Padgett [1] and then made available to the public.
+  The dataset includes important families that were involved in a struggle for political control in Florence around 1430. With the collected data, researchers can analyze the influence of individual families and, in addition, can get a better understanding of the impact of these different kinds of relationships.
+
+Each network consists of 16 families of the city of Florence in the early 15th century. In the graph, a family is represented as a node and marriages or business ties are the relations (edges) between these nodes. All the relations we consider are non-directional (symmetrical).
+
+
+
+[1] Padgett, J.F. (1994): Marriage and Elite Structure in Renaissance Florence, 1282-1500. ([http://home.uchicago.edu/~jpadgett/papers/unpublished/maelite.pdf](http://home.uchicago.edu/~jpadgett/papers/unpublished/maelite.pdf))
+
+
+
+### Data
+
+Network data is made up of two main components: the structure of the graph itself (topology) and attributes of the nodes and edges. The topology of the graph is captured via its edges, which connect the nodes in the network.  
+Storing the topology is usually done in one of two ways: a matrix or an edgelist.  
+Storing attributes/metadata for the nodes cannot be stored in a matrix nor an edgelist. This must be stored in a separate csv file.  
+Storing attributes/metadata for the edges can only be stored in an edgelist, and not in a matrix.
+
+- Edgelist: This is a simple way to represent a network as a basic list (e.g. csv file). Each row contains 2 IDs, each ID representing 1 node/vertex that link to each other via an edge. If edges have weights/magnitude, you can add a third column with the individual values. With this format, you can add more metadata for each edge, simply by adding a new column for each edge attribute. Alternatively, you can add the edge attributes in a separate csv file.
+
+- Adjacency matrix: If a graph has *n* vertices we can store the data in an n × n matrix. Data stored in this format is in many cases very convenient for the further processing in JS and D3. For example, we can query it easily with ```graph[i][j]```. The disadvantage of matrices is that they use a lot of space to represent only a few edges.
+
+For this lab, the structure of the network is stored in two adjacency matrices (one containing edges for marriages, another for business ties), while the attributes are stored in an external csv file:
+
+1. Dataset: Meta data **[```florentine-family-attributes.csv```](https://surfdrive.surf.nl/files/index.php/s/SoS2f8F8nb2sg5t)**
+
+	- Family
+	- Wealth (each family's net wealth in thousands of lira; in 1427)
+	- Priorates (seats on the civic council)
+
+	```csv
+	"Family","Wealth","Priorates"
+	"Acciaiuoli",10,53
+	"Albizzi",36,65
+	"Barbadori",55,NA
+	"Bischeri",44,12
+	...
+	```
+
+	*You will use the above dataset as a meta information for the networks. The family in the first row in the above dataset corresponds to the family in the first row and column of the adjacency matrices. The family in second row corresponds to the second row/column of the adjacency matrix, etc.*
+
+2. Adjacency matrix: **Marriages**
+<a name="adjacency_matrices"></a>
+```
+let dataMarriages = [
+	[0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0],
+	[0,0,0,0,0,1,1,0,1,0,0,0,0,0,0,0],
+	[0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0],
+	[0,0,1,0,0,0,0,0,0,0,1,0,0,0,1,0],
+	[0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+	[0,1,0,1,0,0,0,1,0,0,0,0,0,0,0,1],
+	[0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0],
+	[1,1,1,0,0,0,0,0,0,0,0,0,1,1,0,1],
+	[0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0],
+	[0,0,0,1,1,0,0,0,0,0,0,0,0,0,1,0],
+	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,1],
+	[0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0],
+	[0,0,0,1,1,0,0,0,0,0,1,0,1,0,0,0],
+	[0,0,0,0,0,0,1,0,1,0,0,0,1,0,0,0]
+];
+```
+
+
+3. Adjacency matrix: **Business Ties**
+
+```
+let dataBusiness = [
+	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,1,1,0,0,1,0,1,0,0,0,0,0],
+	[0,0,0,0,0,0,1,1,0,0,1,0,0,0,0,0],
+	[0,0,1,0,0,0,0,1,0,0,1,0,0,0,0,0],
+	[0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0],
+	[0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0],
+	[0,0,0,1,1,0,1,0,0,0,1,0,0,0,0,0],
+	[0,0,1,0,0,1,0,0,0,1,0,0,0,1,0,1],
+	[0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0],
+	[0,0,1,1,1,0,0,1,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0]
+];
+```
+
+
+[//]: # (Source: [http://svitsrv25.epfl.ch/R-doc/library/ergm/html/flomarriage.html](http://svitsrv25.epfl.ch/R-doc/library/ergm/html/flomarriage.html)
+
+
+## Network Visualization
+
+Networks can be visualized in several different ways, the two most common of which are node-link diagrams and adjacency matrices. Notices that the term `adjacency matrix` can refer to both the data structure that stores the graph, as described in the Data section above, and the visualization approach (which you will be implementing in this lab).
+
+Node-link diagrams are the most common way of visualizing graphs, but they have a few key limitations:  
+(1) they do not scale well to large networks,  
+(2) they can quickly become cluttered for dense networks with several edge crossings (where edges start crossing over each other),  
+(3) they are limited in the amount of attributes that can be encoded for the nodes and particuarly edges.
+
+Adjacency Matrices are an alternative visualization approach for networks that address some of these limitations. They are particuarly well suited for dense graphs since every possible edge in a network is allotted a cell in the matrix, ensuring that there are no edge crossings. Additionally, they are well suited for encoding edge attributes directly in the matrix cell.
+
+[You can read all about visualizing multivariate networks here!](https://vdl.sci.utah.edu/publications/2019_eurovis_mvn/)
+
+## Implementation
+
+In contrast to all our previous labs we won't give you a step-by-step instruction or template today. By working through the different examples of all previous labs and homeworks, you have constantly developed and improved your JS & D3 skillset. You now have all the knowledge and experience that is needed to solve this task *independently*. Therefore, we will just give you a description what we expect as a result. A few additional hints should help you to overcome certain hurdles.
+
+
+### Preview & Problem Description
+
+In this lab you will build a custom visualization with D3 that will look like this one:
+
+![Lab 7 - Preview](infomvis-lab7-iterations.png)
+
+Matrix visualizations are especially appropriate for dense networks, i.e. those that have many edges connecting the nodes in the network. This is because every edge is given its own cell in the matrix, and there is never any occlusion/overlap of edges, as is common in a node-link representation.
+
+In the matrix visualization you will be implementing in this lab, you will encode two types of edges simultaneously in the matrix cells.
+
+*Implementation checklist:*
+
+- Create a matrix visualization that visualizes the relations between these 16 families
+- Merge the datasets and label the rows and columns with the corresponding family names
+- Draw two triangles in each cell to encode both relationships (marriages and business ties)
+
+We give you some more pointers and hints below, however, we encourage you to try to work through this as independently as possible. Only use the extra hints (specially marked) if you do not know how to get started on a certain task!
+
 
 ---
 
-## D3 Shapes
+### Get started
 
-> The D3 shape methods have no direct visual output. Rather, D3 shapes take data that you provide and re-map or otherwise transform it, thereby generating new data that is more convenient for a specific task. (Scott Murray)
+1) Set up a new D3 project (HTML, CSS, JS files). You should already have a template project that you can reuse for that. Create a matrix class (similar to previous homeworks), with a constructor, initVis(), wrangleData() and updateVis() functions.  
 
-Visualizations typically consist of discrete graphical marks, such as symbols, arcs, lines and areas. While the rectangles
-of a bar chart may be easy enough to generate directly using SVG or Canvas, other shapes are complex, such as rounded annular
-sectors and centripetal Catmull–Rom splines. The D3 shape module provides a variety of shape generators for your convenience.
+2) Please download the CSV file: [florentine-family-attributes.csv](https://surfdrive.surf.nl/files/index.php/s/SoS2f8F8nb2sg5t)
 
-![D3 Shapes](./infomvis-d3-layouts.png)
+3) The adjacency matrices are only available in the raw text format [shown above](#adjacency_matrices). Copy the matrices and integrate them into your code so that you can easily access each element with ```matrix[i][j]```.
 
-Each shape may have distinct features not shared by others, so make sure to consult the D3 documentation([https://github.com/d3/d3-shape/blob/master/README.md](https://github.com/d3/d3-shape/blob/master/README.md)) for implementation details. You will learn more about a few selected shapes in this lab.
+4) Sanity check: Print the data of all 3 files with ```console.log()``` to make sure that the data is correct. (You should always check for errors before you continue to the next step in a project.)
 
-&nbsp;
+5) When creating an instance of your Matrix class, make sure and pass in all the necessary data to the constructor (graph edges for family, graph edges for business, and graph attributes).
 
-### Pie Shape
 
-In this week's lab, we will introduce you to D3 shapes by creating a simple pie chart. We will
-make use of the pie shape generator, i.e. the **_d3.pie()_** method, which computes
-the start and end angles of arcs that comprise a pie or donut chart.
+<details>
+<summary>
+***Extra hint*** (click me only if you are stuck!)
+</summary>
 
-_Example:_
 
-```javascript
-// Initialize data
-let data = [45, 30, 10];
+1. D3 project template: [d3\_project_template.zip](https://surfdrive.surf.nl/files/index.php/s/P9ONk5XhgSdILlY)
 
-// Define a default pie layout
-let pie = d3.pie();
+2. Adjacency matrices: There are two different strategies to handle this data:
 
-// Call the pie function
-pie(data);
-```
+	- a) Create one csv file per adjacency matrix, read in the files, and convert each matrix into a JS variable (a 2D array). This is the cleanest solution, and allows you to easily use different matrices.
+	- b) This is the quick and dirty solution, which is sufficient if you are sure that the data will never really change. You can store the matrices directly as JS variables in your JS file. Just initialize a 2D array directly with the values listed above.
 
-_Console Output:_
+</details>
 
-![D3 Pie Shape Generator](./infomvis-d3-pie-console-output.png)
-
-The D3 pie shape takes a dataset and creates an array of objects. Each of those objects contains
-a value from the original dataset, along with additional data, like _startAngle_ and _endAngle_.
-That's all there is to the D3 pie shape. It has no visual output, but transforms the input
-data in a way that it is much more convenient for drawing a pie chart.
-
-&nbsp;
-
-Now that we understood how the pie generator works, let's draw the actual pie chart. We'll use an
-arc generator **_d3.arc()_** to generate the paths for the pie segments. Take a few minutes to
-look through the following code example:
-
-```javascript
-// SVG drawing area
-let width = 300,
-  height = 300;
-
-// Position the pie chart (currently only a placeholder) in the middle of the SVG area
-let svg = d3
-  .select("body")
-  .append("svg")
-  .attr("width", width)
-  .attr("height", height)
-  .append("g");
-
-// pie chart setup
-let pieChartGroup = svg
-  .append("g")
-  .attr("class", "pie-chart")
-  .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
-
-// Initialize the data
-let data = [45, 30, 10];
-
-// Define a default pie layout
-let pie = d3.pie();
-
-// Ordinal color scale (10 default colors)
-let color = d3.scaleOrdinal(d3.schemeCategory10);
-
-// Pie chart settings
-let outerRadius = width / 2;
-let innerRadius = 0; // Relevant for donut charts
-
-// Path generator for the pie segments
-let arc = d3.arc().innerRadius(innerRadius).outerRadius(outerRadius);
-
-// Bind data
-let arcs = pieChartGroup.selectAll(".arc").data(pie(data));
-
-// Append paths
-arcs
-  .enter()
-  .append("path")
-  .attr("d", arc)
-  .style("fill", function (d, index) {
-    return color(index);
-  });
-```
-
-&nbsp;
-
-## Activity I
-
-![Preview Activity I](./infomvis_w6_lab_activity1.png)
-
-#### Activities & Walkthrough
-
-1. **Download the template for this week's lab**
-
-   The provided [template](https://surfdrive.surf.nl/files/index.php/s/HUauFsXJdtg14E1) includes:
-
-   - a css folder with a very basic `styles.css` file that styles your tooltips
-   - a data folder with files that we will need for Activity II.
-   - a js folder with
-     - `main.js` that takes care of loading the data and initializing all the visualizations.
-     - `pieChart.js` defining the class `PieChart` (already containing some code)
-     - `mapVis.js` that contains some code for class `MapVis` that you will create
-       in Activity II.
-   - the HTML file `index.html` with a basic document structure
-
-   &nbsp;
-
-2. **Familiarize yourself with the template**
-   Run `index.html` and inspect the DOM. Notice that you already created instances of the
-   class PieChart and MapVis. These instances are named `myPieChart` and `myMapVis`;
-   Next, explore the class `PieChart`. By now, you should be familiar with the constructor
-   method as well as our method pipeline initVis() -> wrangleData() -> updateVis() that allows
-   us to trigger e.g the wrangleData() method externally, manipulate the data, and update the
-   visualization.
-3. **Complete the class PieChart and its methods**
-
-   Using the sample code for a pie chart that we provided, finish writing the class PieChart
-   . Notice, that the code we provided works fine if you would copy-paste it in a plain js file
-   and embed it in your website (feel free to try it out!) However, we want to do something
-   more sophisticated by using classes. Thus, you might want to go through the sample code
-   line by line and adapt the code snippets in the appropriate methods, i.e. `initVis
-   ()` vs. `updateVis()`. Make sure that you are using the keyword `this/vis
-   ` properly
-   , i.e. that you store your key variables in properties so that your object can access them
-   across methods.
-
-   In short, these are the steps that you probably want to do in initVis():
-
-   - margin conventions are already defined, so
-   - start by creating a pieChart group
-   - define inner and outer radius
-   - define pie layout
-   - set up your path generator
-
-   **Note:** In the code snippet above, we call d3.pie and hand it an array of numbers. However, if you want to generate a pie slice for something more complex than an object, we can tell it how to determine that value by giving it a `value` function. For instance, if we have an array where each element is
-   ` {'name': name, 'value': value}`
-   we can tell d3.pie where the value is stored like so
-
-```javascript
-d3.pie().value((d) => d.value);
-```
-
-This should be helpful for the data in the lab.
-
-Next up is wrangleData(). Here, you don't need to do anything except to understand what's going on. We are creating a very simple data structure for you. It is an array of objects. Each object has a random value (between 0-100) and a fixed color. This should help you when defining the fill attribute for the arcs.
-
-Lastly, let's look at updateVis(). Here, you want to draw the arcs that make up the actual
-pieChart.
-
-4. **Create a tooltip**
-
-   When hovering over an arc, a tooltip should appear. First, add a `div` container for your
-   tooltip to the DOM. Ideally, you do this in `initVis()` method of the class itself rather
-   than in your `index.html` document. (odds are you want a tooltip for each instance).
-
-   ```javascript
-   // append tooltip
-   vis.tooltip = d3
-     .select("body")
-     .append("div")
-     .attr("class", "tooltip")
-     .attr("id", "pieTooltip");
-   ```
-
-   Next, add an event listener to your arcs.
-
-   ```javascript
-   .on('mouseover', function(event, d){})
-   ```
-
-   Make sure to use a regular `function(){}` rather than an arrow function so that the
-   keyword `this` is bound to the actual arc, i.e. the selection. This will help you to
-   manipulate the color of the selection on hover easily.
-
-   ```javascript
-   d3.select(this)
-     .attr("stroke-width", "2px")
-     .attr("stroke", "black")
-     .attr("fill", "rgba(173,222,255,0.62)");
-   ```
-
-   Inside your `.on()` event listener, change the attributes of your tooltip so that it
-   moves to the current mouse position and displays the proper information. Here's a tooltip
-   that should display all the information that you have access to:
-
-   ```javascript
-   vis.tooltip
-     .style("opacity", 1)
-     .style("left", event.pageX + 20 + "px")
-     .style("top", event.pageY + "px").html(`
-            <div style="border: thin solid grey; border-radius: 5px; background: lightgrey; padding: 20px">
-                <h3>Arc with index #${d.index}<h3>
-                <h4> value: ${d.value}</h4>      
-                <h4> startAngle: ${d.startAngle}</h4> 
-                <h4> endAngle: ${d.endAngle}</h4>   
-                <h4> data: ${JSON.stringify(
-                  d.data
-                )}</h4>                         
-            </div>`);
-   ```
-
-   Now, the only thing that is missing is to define the `mouseout` behavior. It's just
-   resetting everything:
-
-   ```javascript
-   .on('mouseout', function(event, d){
-                   d3.select(this)
-                       .attr('stroke-width', '0px')
-                       .attr("fill", d => d.data.color)
-
-                   vis.tooltip
-                       .style("opacity", 0)
-                       .style("left", 0)
-                       .style("top", 0)
-                       .html(``);
-               })
-   ```
-
-5. **Update pieChart when new data comes in**
-
-   You might have noticed the little `update` button on the website. Check out
-   `main.js` to understand its behaviour.
-
-   --
-
-   Yes, you're right :) Clicking on it `triggers` the `wrangleData()` method of
-   `myPieChart`. Thus, `displayData` has changed. Make sure to include `.merge
-()` when binding the data so that your pieChart updates accodingly.
-
-   &nbsp;
-
-#### Congrats! You've finished Activity I!
-
-> **Important Notice**
->
-> We have used a pie chart as an example because it is one of the most popular chart types, and
-> it demonstrates the concept of D3 shapes very well. However, it is also very important to
-> mention that pie charts are often not the best way to represent data! Humans are not very good
-> at comparing slices of a circle, and pie charts easily lead to misunderstandings or give false
-> impressions of the data. Usually, other visualization methods are more effective, so most of
-> the time you shouldn't use pie charts. If you do, make sure to compare only a very low number
-> of elements within these charts.
-
-&nbsp;
-
-Now that you have been introduced to
-[D3 shapes](https://github.com/d3/d3-shape/blob/master/README.md), feel free to explore the
-different layouts, their features, and their differences to each other! Pie charts are just the
-beginning!
 
 ---
 
-&nbsp;
+### Data wrangling
 
-## Geomapping
+A good approach for wrangling the given datasets would be to process and merge all three datasets (in ```wrangleData()```). You can create a new JS object for each family with the surname and sub-arrays for marriages and business ties. This structure will also help you later to efficiently sort the dataset, because you can add additional attributes, such as the number of business ties for each family.
 
-In the second part of this lab we will focus on a different topic: We want to show you how to convert geographical data to screen coordinates, in order to create interactive maps. These maps can show specific regions, countries or whole continents. You will learn how to render geographic data as paths, how to assign colors and how to draw data points on top of the map.
-
-### GeoJSON
-
-GeoJSON is a JSON-based standard for encoding a variety of geographic data structures. We need the data (e.g., country boundaries, points of interests) in a proper format to generate visualizations of geographic data. Web browsers and especially D3 are not able to render traditional shapefiles, which are used by experts in geographic information systems (GIS). Therefore, GeoJSON has been established as a common way to store this information for use in web browsers.
-
-The sub-units in GeoJSON files are called **_Features_**. They contain the geodata (points, polygons, lines, ...) and very often additional information about the objects, for example, the names and the ISO codes of countries. All the features are part of the main object, the **_FeatureCollection_**.
-
-_Example:_
+*Example structure:*
 
 ```javascript
-{
-	"type" : "FeatureCollection",
-	"features" : [
-		{
-		  "type": "Feature",
-		  "geometry": {
-		    "type": "Point",
-		    "coordinates": [51.507351, -0.127758]
-		  },
-		  "properties": {
-		    "name": "London"
-		  }
-		},
-		{
-			...
-		}
-	]
-}
+let data = [
+	{
+		...
+	},
+	{
+		"index": 8,
+		"name": "Medici",
+		"allRelations": 11,
+		"businessTies": 5,
+		"businessValues": [0,0,1,0,0,1,0,0,0,1,0,0,0,1,0,1],
+		"marriages": 6,
+		"marriageValues": [1,1,1,0,0,0,0,0,0,0,0,0,1,1,0,1],
+		"numberPriorates": 53,
+		"wealth": 103
+	},
+	{
+		"index": 9,
+		"name": "Pazzi",
+		...
+	}
+];
 ```
 
-In this example we have a feature which represents a single geographical point. The coordinates of the point are specified as an array with longitude and latitude values (`[-0.127758, 51.507351]`). In GeoJSON the first element indicates the longitude, the second element the latitude value.
+1) Create a JS object for each family, containing all the attributes listed in the example code above
 
-In many more cases, GeoJSON files contain complex polygon data that represent the boundaries of multiple regions or countries instead of a plain list of points:
+2) Add each family object to an array containing all families.
 
-```javascript
-"geometry": {
-	"type": "MultiPolygon",
-	"coordinates": [[[[-131.602021,55.117982],
-		[-131.569159,55.28229],[-131.355558,55.183705],
-		[-131.38842,55.01392],[-131.645836,55.035827], ...
-    ]]]
-}
-```
+***Free hint:*** In many projects you can make your life a lot easier by making sure that you have converted the data into a format that is ideal for your further processing/visualization tasks. Especially for smaller datasets it often pays of to create a different datastructure that allows you to easily access all of it.
 
-Depending on the resolution of the dataset, each feature will include more or less longitude/latitude pairs. As you can imagine, the size of a GeoJSON file becomes tremendously high if you store the boundaries of a whole continent in high resolution.
+<details>
+<summary>
+***Extra hint*** (click me only if you are stuck)
+</summary>
 
-### TopoJSON
 
-TopoJSON is an extension of GeoJSON that encodes topology. The generated geographical data is substantially more compact than GeoJSON and results in a file size reduction of roughly 80%.
+1. Create an empty array ```displayData``` in ```initVis```
+2. In ```wrangleData``` you can use a ```forEach``` loop to go over all families (this can be either the marriage or the business matrix, since both contain one row per family). The important thing is that you are looping over all families.
 
-Depending on your needs, you will probably find appropriate TopoJSON files online. You can also generate custom TopoJSON files from various formats with the TopoJSON command-line tool.
+3. Inside the loop create a ```let family = {...``` and add all attributes you want to store to it. This will include information from both marriage and business matrices, as well as the attributes data.
 
-→ **_Whenever you want to use a TopoJSON file in D3, you will need the TopoJSON JavaScript library to convert the data to GeoJSON for display in a web browser:_** [http://d3js.org/topojson.v1.min.js](http://d3js.org/topojson.v1.min.js)
+4. Inside the loop, add that object to your ```displayData``` array.
 
-In addition to the GeoJSON conversion, the JS library provides further methods, for example, to get the neighbors of objects or to combine multiple regions (_topojson.mesh()_).
+</details>
 
-### Workflow to implement a map with D3
-
-**_Create projection ⇒ Create D3 geo path ⇒ Map TopoJSON data to the screen_**
-
-#### D3 projections
-
-Drawing a geographical map in D3 requires the mapping of geographical coordinates (longitude, latitude) to screen coordinates (x, y). The functions to process the mapping are called projection methods. D3 already includes a set of the most common geo projections.
-
-_This image shows four different projections in D3:_
-
-![D3 Projections](./infomvis-d3-projections.png)
-
-_(You can take a look at the [documentation](https://github.com/d3/d3-geo/blob/master/README.md) to see more examples of geo projections.)_
-
-When projecting positions from a sphere (i.e., the world) to a 2D plane, these different projection methods can have very different results. Different projection methods have different characteristics (e.g., distance, direction, shape, area) and show different levels of distortion.
-
-#### D3 geo path
-
-The path generator takes the projected 2D geometry from the last step and formats it appropriately for SVG. Or in other words, the generator maps the GeoJSON coordinates to SVG paths by using the projection function.
-
-```javascript
-let path = d3.geoPath().projection(projection);
-```
-
-#### Map TopoJSON data to geo path elements
-
-After defining the SVG area, the projection and the path generator, we can load the TopoJSON
-data, convert it to GeoJSON and finally map it to SVG paths. Here's a one-liner converting
-TopoJSON data for the US to GeoJSON. The data structure you end up with will allow you to draw a
-path for each state in the US.
-
-```javascript
-// Convert TopoJSON to GeoJSON (target object = 'states')
-let usa = topojson.feature(data, data.objects.states).features;
-```
 
 ---
 
-## Activity II
 
-![Preview Activity II](./infomvis_w6_lab_activity2.png)
 
-In the second part of the lab, you will create a choropleth (world) map. You will implement a
-feature that updates the colors of the countries as well as a feature that allows users to
-rotate the globe. Lastly, you'll also implement a tooltip that appears when a user hovers over a
-country.
+### Create a matrix visualization with D3
 
-&nbsp;
+D3 is an extremely flexible library, thus, there are multiple ways to draw matrix visualizations / heatmaps. Here is the recommended approach for this lab:
 
-#### Activities & Walkthrough
+1) Use the enter/update/exit approach to create one row `g` element per family object (vis.displayData should contain an array of family objects created in wrangleData()). Let's call this selection `rows`.  Make sure to give the groups a class name like `matrix-row`.
 
-1.  **Familiarize yourself with the constructor of the class MapVis**
+2) transform the row groups vertically as a function of the index of each row in the array and vis.cellHeight + vis.cellPadding (defined in initiVis())
 
-    First, notice that we've already created an instance of MapVis for you. In fact, margin
-    conventions are already set up for you and even a heading is included. Also, the constructor
-    method has been predefined.
+3) Use the `rows` selection to append a text label for each one that contains the family name (d.name in your family data object).
 
-    So, let's check out the constructor of class MapVis: Notice, that it has three parameters, i.e
-    . expects three arguments. In addition to the parent element in which the visualization should sit in, it
-    also wants both data to display as well as geogaphical data. This leads us to the question
-    : how do we load more than one csv file in JS? We were leveraging the idea of promises using
-    e.g. d3.csv(), but how would this be done with multiple files? Check out `main.js` to
-    find out.
+```
+	rows.append("text")
+	.attr('x',...)
+	.text(d=>d.name)
 
-    Since functions are first class objects, we can store them in an array and then use Promise
-    .all to execute all of them. Very similar to our `d3.csv()` method, we have access to
-    all the data inside `.then()`. Notice, that since we are loading two data sets, the data
-    structure is an array with two elements. You have to access them by index if you want to
-    pass on only one as an argument.
+```
 
-    ```javascript
-    let promises = [
-      d3.json("data/airports.json"),
-      d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json"),
-    ];
+4) Perform a second enter/update/exit selection, (this time starting with the `rows` selection so that it will be applied to each row individually) to create rectangles/triangles for each marriage/business or combination of both (depending on which stage of the lab you are at).
 
-    Promise.all(promises)
-      .then(function (data) {
-        initMainPage(data);
-      })
-      .catch(function (err) {
-        console.log(err);
-      });
-    ```
+For this step, you do not need to pass in the raw data again, but can instead leverage the data that is already bound to each `row` element as such:
 
-    &nbsp;
+```
+	let edgeCells = rows.selectAll(".matrix-cell-marriage")
+			.data(d=>d.marriageValues)
+			.enter()
+			.append...
 
-2.  **Think about the MapVis architecture**
+```
 
-    Now that you're familiar with `class MapVis`, think about your pipeline and
-    where to do what. What part of the map drawing can you 'outsource' into the `initVis
-()` method?
+Notice that what is happening here is that we are using the array `marriageValues` that is in each row object, to create one edge cell per element in that array. What you append here depends on which stage of the lab you are at, and will start as rects, and end up as triangle paths.
 
-    Start by assuming that, eventually, you want to be able to update the color of each country
-    . Of course, you could append paths for each country every time you call updateVis() and make
-    use of `merge()` but this is probably overkill. After all, the number of countries won't
-    change. Thus, you should consider drawing
-    the map already in initVis() with a transparent fill. In updateVis() you could then just
-    grab that selection and change the fill attribute according to the data.
+If you are drawing triangles, you will repeat the step above, once with d.marriageValues as the data element, and once with d.businessValues.  Don't forget to color them according to the type of edge (marriage/business)
 
-    &nbsp;
+5) The last step is adding in the column labels. Since these are the same labels (Family name) as the rows, you can simply do an enter/update/exit pattern to create text elements, passing in vis.displayData as the data(). Remember to position each text label with its index in the array and by using vis.cellWidth and vis.cellPadding.
 
-3.  **Write and complete initVis method**
+Check that your visualization roughly looks like the picture 1 shown above.
 
-    So, what to do in `initVis()`. Here's a list of all the tasks:
+***Free hint:*** Try to always split your approach into smaller tasks that you can tackle one after the other. For example, first make sure you can draw rows. You could start with just drawing a text label per row, just for debugging. Once that works, work on drawing something for each element. Once that works, work on drawing the actual visual element (colored triangle) for that data.
 
-    1. create a projection.
+<details>
+<summary>
+***Extra hint*** (click me only if you are stuck)
+</summary>
 
-       ```javascript
-       vis.projection = d3
-         .geoOrthographic() // d3.geoStereographic()
-         .translate([vis.width / 2, vis.height / 2]);
-       ```
 
-    2. define a geo generator and pass your projection to it
+1. Create a ```matrix.js``` file for your matrix visualization. Init it after you have finished loading in the data in ```main.js```
+2. In ```initVis()``` you should set your margins, SVG drawing area, and other init values you might need, and call ```wrangleData()```.
 
-       ```javascript
-       vis.path = d3.geoPath().projection(vis.projection);
-       ```
+3. In ```updateVis()```: Draw the matrix rows: assign a class (e.g. ```.matrix-row```), append a svg group element per row, translate its height, and append a text field (basically the y-axis label of that row). You should now see a column of labels showing numbers from 0 - 15.
+4. In ```updateVis()```: Draw all matrix elements: Assign classes (e.g., matrix-cell, matrix-cell-marriage), draw a small rectangle, and set its color depending on the data properties (matrix value 0 or 1)
+5. Draw x-axis labels: Append text for each column. Remember that the numbers of columns and rows is equal! Translate the labels to their correct position.
 
-    3. convert your TopoJSON data into GeoJSON data structure
 
-       ```javascript
-       vis.world = topojson.feature(
-         vis.geoData,
-         vis.geoData.objects.countries
-       ).features;
-       ```
-
-       &nbsp;
-
-    4. draw countries
-
-       ```javascript
-       vis.countries = vis.svg
-         .selectAll(".country")
-         .data(vis.world)
-         .enter()
-         .append("path")
-         .attr("class", "country")
-         .attr("d", vis.path);
-       ```
-
-    &nbsp;
-
-4.  **Define scale and include a zoom factor**
-
-    Hopefully, you just had a 'wow'-moment. But you're not done, yet. Depending on your browser
-    window size, the map/globe might be a little too big. So, we ask you to scale your
-    projection. `d3.geoOrthographic()` has a default scale value of 249.5. Thus, you could
-    just manipulate that by setting `.scale(230)`. Or, you could calculate a zoom variable
-    based on your `vis.height` and multiply the default value 249.5 by that. Solve this
-    task however you want, but keep in mind that you want to make sure that a user on
-    another machine and screen sees the same proportions as you.
-
-    &nbsp;
-
-5.  **Understand what's going on in wrangleData**
-
-    Just like in the pieChart, we use wrangleData to create some random data. in this case, we
-    create a dictionary with all countries as keys and random colors from an array of 4 colours
-    that we defined in the constructor. We will use this dictionary as lookup table when
-    assigning colors to the countries in `updateVis()`, which is your next task.
-
-    &nbsp;
-
-6.  **Update the fill attribute of all countries in updateVis()**
-
-    Select all countries (or grab the selection if you already stored it as a property) and change
-    the fill attribute of each country. Use the lookup table that is stored in the property
-    `countryInfo`.
-
-    The colors of the countries should now update. Also, when clicking on the `update` button
-    , you should see the colors of the map update. Can you explain why?
-
-    &nbsp;
-
-7.  **Add a tooltip and hover effects**
-
-    Similar to the pieChart, add a tooltip when hovering over a country path. Also, change the
-    color while hovering to have a nice hover effect. If you don't know the code by heart, just
-    look it up in Activity I. (Don't forget to append an actual tooltip div!)
-
-    &nbsp;
-
-8.  **Add sphere and graticule to mimic the ocean and the globe**
-
-    You might have been playing around with the fill attribute and maybe you have wondered how to
-    change the color of the ocean. Well, that is actually not that easy because we only have the
-    paths for the countries. Of course, one could try to reverse/inverse-engineer the paths for the
-    ocean but there's an easier way out. Let's just put a sphere behind the map. Here's the
-    code for it:
-
-    ```javascript
-    vis.svg
-      .append("path")
-      .datum({ type: "Sphere" })
-      .attr("class", "graticule")
-      .attr("fill", "#ADDEFF")
-      .attr("stroke", "rgba(129,129,129,0.35)")
-      .attr("d", vis.path);
-    ```
-
-    &nbsp;
-
-9.  **Add legend**
-
-    The map/globe looks nice now, but you are missing one important piece - a legend. For now, we
-    would like you to implement a legend with four steps reflecting the four different colors in
-    the color array in the constructor. Think of this task as producing a very small barchart
-    with less complex data.
-
-    These are the steps to complete the task:
-
-    - start by creating a legend group. translate it to wherever you want it to be.
-
-    ```javascript
-    vis.legend = vis.svg
-      .append("g")
-      .attr("class", "legend")
-      .attr(
-        "transform",
-        `translate(${(vis.width * 2.8) / 4}, ${vis.height - 20})`
-      );
-    ```
-
-    - draw rectangles inside the legend group (they will already be translated!)
-
-    ```javascript
-    vis.legend.selectAll().data(vis.colors)
-        .enter()
-        ...
-    ```
-
-    - create a legendScale (linear, band, time - whatever you need)
-    - create a legend axis group
-    - create a legend axis
-    - call the legend axis inside the legend axis group
-
-    &nbsp;
-
-10. **Make the map draggable / rotatable**
-
-    You made it this far! Now you've earned some free code. The following lines allow you to
-    drag your map which will result in the globe to rotate. In short, what the code does is to
-    get the values of where you started dragging and where you ended dragging. It then computes the change in
-    pixel values. Together with the information from the projection, we can then update the
-    path for each country accordingly. We do that both for the countries as well as for the
-    graticule. This code can sit in initVis().
-
-    ```javascript
-    let m0, o0;
-
-    vis.svg.call(
-      d3
-        .drag()
-        .on("start", function (event) {
-          let lastRotationParams = vis.projection.rotate();
-          m0 = [event.x, event.y];
-          o0 = [-lastRotationParams[0], -lastRotationParams[1]];
-        })
-        .on("drag", function (event) {
-          if (m0) {
-            let m1 = [event.x, event.y],
-              o1 = [o0[0] + (m0[0] - m1[0]) / 4, o0[1] + (m1[1] - m0[1]) / 4];
-            vis.projection.rotate([-o1[0], -o1[1]]);
-          }
-
-          // Update the map
-          vis.path = d3.geoPath().projection(vis.projection);
-          d3.selectAll(".country").attr("d", vis.path);
-          d3.selectAll(".graticule").attr("d", vis.path);
-        })
-    );
-    ```
-
-    &nbsp;
-
-11. **Play with other layouts**
-
-        OK, time for more fun with maps. Play around with other projections. Follow this [link](https://github.com/d3/d3-geo)
-        and scroll down to the various projections. Swap out `d3.geoOrthographic()` for e.g. `d3
-
-    .geoStereographic()`, etc.
-
-        &nbsp;
-
-12. **BONUS: Draw airports and connections**
-
-    In case you haven't had enough, we challenge you to also display the airports in the map
-    . Remember that your object `myMapVis` already has access to the airport data. Including
-    the airports as circles shouldn't be too hard for you. The only thing new for you is how to
-    set up the coordinates for both the airports as well as the connections. Here are some
-    useful lines of code.
-
-    ```javascript
-
-    // airports
-    .attr('cx', d => vis.projection([d.longitude, d.latitude])[0])
-    .attr('cy', d => vis.projection([d.longitude, d.latitude])[1]
-
-    // connections
-    .attr("x1", function(d) { return vis.projection([vis.airportData.nodes[d.source].longitude, vis.airportData.nodes[d.source].latitude])[0]; })
-    .attr("y1", function(d) { return vis.projection([vis.airportData.nodes[d.source].longitude, vis.airportData.nodes[d.source].latitude])[1]; })
-    .attr("x2", function(d) { return vis.projection([vis.airportData.nodes[d.target].longitude, vis.airportData.nodes[d.target].latitude])[0]; })
-    .attr("y2", function(d) { return vis.projection([vis.airportData.nodes[d.target].longitude, vis.airportData.nodes[d.target].latitude])[1]; });
-
-    ```
-
-    Almost done! Now you just need to make sure that the dragging behavior is fine. Check out
-    how we handled updating the country and graticule paths in `d3.drag().on('drag', function
-(){....})` and combine that with your knowledge of setting up the x & y coordinates using
-    longitude & latitude values.
+</details>
 
 ---
 
-### Congratulations! You've completed this week's lab!
+
+### Draw triangles in D3
+
+In the preview and the problem description we have introduced the idea of encoding two relations in one single cell. Instead of drawing one rectangle we can stack two triangles on top of each other. As a result users can see at first glance which families have multiple relationships and other further details.
+
+![Lab 8 - Triangles](infomvis-lab7-triangles.png "Lab 8 - Triangle Example")
+
+In SVG you can create lines, circles, rectangles etc, but not directly triangles. Therefore, you have to use the *path* element. You have used SVG's path already, but most likely always in combination with the D3 path generator. Now, you have to specify the path manually.
+
+The path information is specified within the ```d``` attribute:
+
+```javascript
+<svg height="250" width="300">
+    <path d="M150 5 L75 200 L225 200 Z" fill="blue" />
+</svg>
+```
+
+- ```M```: translates to "move to" and specifies the starting point (x/y coordinate)
+- ```L```: translates to "line to" and draws a line from the current point to the following coordinates
+- ```Z```: translates to "close path". It closes the triangle path by connecting the last point with our initial point.
+
+There are more commands but for our use case the above mentioned options are sufficient. *Important: uppercase commands indicate absolute coordinates and their lowercase counterparts indicate a coordinate relative to the previous coordinate.*
+
+![Lab 8 - TrianglePath](infomvis-lab7-triangle-path.png)
+
+*Example code snippet for the upper triangle (#1):*
+
+```javascript
+let cellHeight = 20, cellWidth = 20, cellPadding = 10;
+
+// D3's enter, update, exit pattern
+let trianglePath = row.selectAll(".triangle-path")
+	.data(data);
+
+trianglePath.enter().append("path")
+	.attr("class", "triangle-path");
+
+trianglePath.attr("d", function(d, index) {
+	// Shift the triangles on the x-axis (columns)
+	let x = (cellWidth + cellPadding) * index;
+
+	// All triangles of the same row have the same y-coordinates
+	// Vertical shifting is already done by transforming the group elements
+	let y = 0;
+
+	return 'M ' + x +' '+ y + ' l ' + cellWidth + ' 0 l 0 ' + cellHeight + ' z';
+});
+```
+
+1) Change your code so that you draw two triangles instead of the previous rectangle. One triangle represents the marriage information, the other one the business information.
+
+
+
+### Data Fetching
+
+
+You have already worked with the d3-fetch module in the past. We have been using `d3.csv` and `d3.json` in almost 
+every single lab and homework. Here's some sample code to remind you of the syntax:
+
+```javascript
+// loading csv
+d3.csv("/path/to/file.csv").then(function(data) {
+  console.log(data); // [{"Hello": "world"}, …]
+});
+
+
+// loading json
+d3.json("/path/to/file.json").then(function(data) {
+  console.log(data); // [{"Hello": "world"}, …]
+});
+```
+
+The [d3-fetch](https://github.com/d3/d3-fetch) module is built on top of the javascript fetch API. As a consequence, you would be able to complete all the 
+tasks of this lab by using d3.json, but we would like to teach you what's going on underneath the hood. 
+
+When you make an HTTP request from a URL, the fetch() method will return an object. In the first `.then()` method 
+of fetch, you can pass in a call-back function that takes as an argument the body of the response object. 
+You can then call a method on the body of the return object (i.e. `.json()`, `.text()`, etc.) to convert it accordingly. This is what d3 is doing for you as long as you select 
+the right method (i.e. d3.csv, d3.json, ... etc. ). Apart from that, the JavaScript fetch API works exactly like the d3-fetch module.
+   
+```javascript
+fetch('http://example.com/movies.json')
+  .then(response => response.json())
+  .then(data => console.log(data));
+```
+
+For your custom vis project do the following: (1) delete the ```florentine-family-attributes.csv``` from your local files (do not forget to refresh your browser cache) and ```fetch``` it on-load from the following URL [https://surfdrive.surf.nl/files/index.php/s/SoS2f8F8nb2sg5t](https://surfdrive.surf.nl/files/index.php/s/SoS2f8F8nb2sg5t). 
+
+Every time someone updates the csv on the server your visualization will show also an updated version. 
 
 &nbsp;
-
-### Resource
-
-- Chapters 13 (p 259-280) and 14 (p. 281-323) in _D3 - Interactive Data Visualization for the Web_ by Scott Murray
-- [http://bost.ocks.org/mike/map/](http://bost.ocks.org/mike/map/)
-- [https://github.com/d3/d3-geo/blob/master/README.mdd](https://github.com/d3/d3-geo/blob/master/README.md)
-- [https://github.com/mbostock/topojson](https://github.com/mbostock/topojson)
-- [https://www.jasondavies.com/maps/rotate/](https://www.jasondavies.com/maps/rotate/)
-- [https://codeasart.com/globe/](https://codeasart.com/globe/)
