@@ -1,4 +1,4 @@
-# Week 01 | Lab
+# Week 01 | Lab (17.11.2023)
 
 Welcome to the first lab of INFOMVIS 2023-2024!
 
