@@ -396,4 +396,4 @@ Every time someone updates the csv on the server your visualization will show al
 
 **Further optional readings**
 
-- Chapter 14 
+- Chapter 14(Geomapping) in D3 - Interactive Data Visualization for the Web.
