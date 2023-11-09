@@ -397,3 +397,11 @@ Every time someone updates the csv on the server your visualization will show al
 **Further optional readings**
 
 - Chapter 14(Geomapping) in D3 - Interactive Data Visualization for the Web.
+- [http://bost.ocks.org/mike/map/](http://bost.ocks.org/mike/map/)
+- [https://github.com/d3/d3-geo/blob/master/README.mdd](https://github.com/d3/d3-geo/blob/master/README.md)
+- [https://github.com/mbostock/topojson](https://github.com/mbostock/topojson)
+- [https://www.jasondavies.com/maps/rotate/](https://www.jasondavies.com/maps/rotate/)
+- [https://codeasart.com/globe/](https://codeasart.com/globe/)
+- Leaflet Quick-Start: [http://leafletjs.com/examples/quick-start.html](http://leafletjs.com/examples/quick-start.html)
+- Leaflet Tile-Providers: [https://leaflet-extras.github.io/leaflet-providers/preview/](https://leaflet-extras.github.io/leaflet-providers/preview/)
+  
