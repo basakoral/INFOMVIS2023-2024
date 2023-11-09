@@ -13,7 +13,7 @@
 ### Prerequisites
 
 - You have read chapter 3 (p. 52-62) and chapter 5 (p. 67-72, p. 79-87)  in *D3 - Interactive Data Visualization for the Web*.
-- You have downloaded the template for this week's lab on Surfdrive. This [link](./week-03_lab_template.zip) should get you there quickly.
+- You have downloaded the template for this week's lab on Github. This [link](./week-03_lab_template.zip) should get you there quickly.
 
 &nbsp;
 
