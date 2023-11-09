@@ -175,7 +175,7 @@ To upload an entire directory structure please compress your entire local direct
 ```
 Note that you should add your name to the filename using CamelCase style, e.g., ```submission_week01_JohnDoe.zip``` if your name is John Doe.
 
-**Congratulations on finishing Homework 1! See you in class!**
+**Congratulations on finishing Homework 2! See you in class!**
 
 
 
