@@ -47,7 +47,9 @@ b. **Include your external stylesheet in your HTML file as well as the Bootstrap
 
 c. **Start populating your `body` by laying out a grid for your page**
 
-Read through the homework and come up with a reasonable grid for your page. Here's a [.png image](./homework_solution_preview.png) of our implementation that might help you to decide on a suitable grid structure. You might have noticed that we kept this hw rather short and simple so that you can focus on key-concepts such as the bootstrap grid system. From now on, we always expect you to create and use a reasonable, accurate, and flawlessly implemented grid system for all your coding projects.
+
+
+Read through the homework and come up with a reasonable grid for your page. Here's a ![Homework Solution Preview](./homework_solution_preview.png) of our implementation that might help you to decide on a suitable grid structure. You might have noticed that we kept this hw rather short and simple so that you can focus on key-concepts such as the bootstrap grid system. From now on, we always expect you to create and use a reasonable, accurate, and flawlessly implemented grid system for all your coding projects.
 
 d. **Add a headline to the HTML `body`**
 
