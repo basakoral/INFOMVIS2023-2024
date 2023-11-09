@@ -249,4 +249,4 @@ Submission instructions:
 
 3. Upload a single .zip file to the week-05/HW/submission folder (https://surfdrive.surf.nl/files/index.php/s/FGfzeuFkPz4yDiP)[https://surfdrive.surf.nl/files/index.php/s/FGfzeuFkPz4yDiP]
 
-**Congratulations for finishing this week's homework! See you in class!**
+**Congratulations for finishing this week's homework! Enjoy your winter break! See you in next class!**
