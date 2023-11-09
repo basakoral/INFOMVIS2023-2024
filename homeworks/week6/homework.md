@@ -218,7 +218,7 @@ You should now apply what you have learned to create an interactive visualizatio
 
 ## Bonus Task
 
-Please make sure to finish al previous tasks before you start with the bonus activity. Extra credit is only given if the rest of the homework has been completed and the full possible points have been received. This task is intended for those of you who have more experience with web development and JS.
+Please make sure to finish all previous tasks before you start with the bonus activity. This task is intended for those of you who have more experience with web development and JS.
 
 You have implemented multiple visualization components and made them responsive to different screen sizes so far, but this responsiveness only works if you refresh the page and is not triggered if you drag to expand or shrink the window.
 
