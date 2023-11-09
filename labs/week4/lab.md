@@ -31,7 +31,7 @@ That is not very flexible and only feasible for static data. What if our data at
 
 *Example:* We want to visualize the monthly sales of an ice cream store. The input data are numbers between 0 and 20,000 USD and the maximum height of the chart is 400px. We take an input inverval (called ***Domain***) and transform it into a new output interval (called ***Range***).
 
-![Scales](./infomvis2022-scales.png)
+![Scales](./infomvis2023-scales.png)
 
 We could transform the numbers from one domain into the other manually but what if the sales rise above 20.000 and the interval changes? That means a lot of manual work. Thankfully, we can use D3's built-in scaling methods to do this automatically.
 
@@ -87,14 +87,14 @@ In this lab you will work on a scatterplot with flexible scales and axes. You wi
 
 *Result:*
 
-![Lab 3 - Preview](infomvis2022-lab4-preview.png)
+![Lab 3 - Preview](infomvis2023-lab4-preview.png)
 
 ***Data:*** ```Country``` | ```Income``` | ```LifeExpectancy``` | ```Population``` | ```Region```
  
 
 1. **Download the framework**
 
-	[template](https://surfdrive.surf.nl/files/index.php/s/PaOgGd6PszOhJLk)
+	[template](./week-04_lab_template.zip)
 	
 	We have included *Bootstrap*, *D3* and the dataset *wealth-health-2014.csv*. The HTML document contains an empty *div* container for the scatterplot and the CSV import is implemented in the JS file ```main_presentation.js```.
  
@@ -187,7 +187,7 @@ let group = svg.append("g")
 	.attr("transform", "translate(70, 50)");
 ```
 
-![SVG Groups](./infomvis2022-svg-groups.png)
+![SVG Groups](./infomvis2023-svg-groups.png)
 
 
 
@@ -224,7 +224,7 @@ svg.append("g")
 	.attr("class", "axis x-axis")
 	.call(xAxis);
 ```
-![D3 Axis 1](./infomvis2022-d3-axis-1.png)
+![D3 Axis 1](./infomvis2023-d3-axis-1.png)
 
 Recall that we can use the *transform* attribute to change the position and move the axis to the bottom. 
 
@@ -254,7 +254,7 @@ Additionally, you can use the HTML *class* property as a selector and modify the
 
 *```shape-rendering``` is an SVG property which specifies how the SVG elements are getting rendered. We have used it in this example to make sure that we don't get blurry axes.*
 
-![D3 Axis 2](./infomvis2022-d3-axis-2.png)
+![D3 Axis 2](./infomvis2023-d3-axis-2.png)
 
 
 ### Refine the axis
@@ -372,7 +372,7 @@ linearColor(0)		// Returns: #006400
 linearColor(50)		// Returns: #48a948
 linearColor(100) 	// Returns: #90ee90
 ```
-![D3 Linear Color Scale](./infomvis2022-linear-color-scale.png)
+![D3 Linear Color Scale](./infomvis2023-linear-color-scale.png)
 
 
 &nbsp;
@@ -404,7 +404,7 @@ linearColor(100) 	// Returns: #90ee90
 	*Most likely you also have to modify the axis ticks.*
 
 
-![Different Axis Scales](./infomvis2022-different-axis-scales.png)
+![Different Axis Scales](./infomvis2023-different-axis-scales.png)
 
 
 -----
@@ -418,7 +418,7 @@ Positioning the axes or defining the correct spacing between the components can 
 
 > By convention, margins in D3 are specified as an object with top, right, bottom and left properties. Then, the outer size of the chart area, which includes the margins, is used to compute the inner size available for graphical marks by subtracting the margins. *(Mike Bostock)*
 
-![D3 Margin Convention](./infomvis2022-margin-convention.png)
+![D3 Margin Convention](./infomvis2023-margin-convention.png)
 
 *Please take some time to look at the recommended sequence by Mike Bostock:*
 

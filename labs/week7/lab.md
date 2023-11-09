@@ -44,7 +44,7 @@ Storing attributes/metadata for the edges can only be stored in an edgelist, and
 
 For this lab, the structure of the network is stored in two adjacency matrices (one containing edges for marriages, another for business ties), while the attributes are stored in an external csv file:
 
-1. Dataset: Meta data **[```florentine-family-attributes.csv```](https://surfdrive.surf.nl/files/index.php/s/SoS2f8F8nb2sg5t)**
+1. Dataset: Meta data **[```florentine-family-attributes.csv```](./florentine-family-attributes.csv)**
 
 	- Family
 	- Wealth (each family's net wealth in thousands of lira; in 1427)
@@ -155,7 +155,7 @@ We give you some more pointers and hints below, however, we encourage you to try
 
 1) Set up a new D3 project (HTML, CSS, JS files). You should already have a template project that you can reuse for that. Create a matrix class (similar to previous homeworks), with a constructor, initVis(), wrangleData() and updateVis() functions.  
 
-2) Please download the CSV file: [florentine-family-attributes.csv](https://surfdrive.surf.nl/files/index.php/s/SoS2f8F8nb2sg5t)
+2) Please download the CSV file: [florentine-family-attributes.csv](./florentine-family-attributes.csv)
 
 3) The adjacency matrices are only available in the raw text format [shown above](#adjacency_matrices). Copy the matrices and integrate them into your code so that you can easily access each element with ```matrix[i][j]```.
 
@@ -170,7 +170,7 @@ We give you some more pointers and hints below, however, we encourage you to try
 </summary>
 
 
-1. D3 project template: [d3\_project_template.zip](https://surfdrive.surf.nl/files/index.php/s/P9ONk5XhgSdILlY)
+1. D3 project template: [d3_project_template.zip](./d3_project_template.zip)
 
 2. Adjacency matrices: There are two different strategies to handle this data:
 
@@ -300,7 +300,7 @@ Check that your visualization roughly looks like the picture 1 shown above.
 
 In the preview and the problem description we have introduced the idea of encoding two relations in one single cell. Instead of drawing one rectangle we can stack two triangles on top of each other. As a result users can see at first glance which families have multiple relationships and other further details.
 
-![Lab 8 - Triangles](infomvis-lab7-triangles.png "Lab 8 - Triangle Example")
+![Lab 7 - Triangles](infomvis-lab7-triangles.png "Lab 7 - Triangle Example")
 
 In SVG you can create lines, circles, rectangles etc, but not directly triangles. Therefore, you have to use the *path* element. You have used SVG's path already, but most likely always in combination with the D3 path generator. Now, you have to specify the path manually.
 
@@ -381,7 +381,7 @@ fetch('http://example.com/movies.json')
   .then(data => console.log(data));
 ```
 
-For your custom vis project do the following: (1) delete the ```florentine-family-attributes.csv``` from your local files (do not forget to refresh your browser cache) and ```fetch``` it on-load from the following URL [https://surfdrive.surf.nl/files/index.php/s/SoS2f8F8nb2sg5t](https://surfdrive.surf.nl/files/index.php/s/SoS2f8F8nb2sg5t). 
+For your custom vis project do the following: (1) delete the ```florentine-family-attributes.csv``` from your local files (do not forget to refresh your browser cache) and ```fetch``` it on-load from the following URL [https://github.com/basakoral/test/blob/main/labs/week7/florentine-family-attributes.csv](https://github.com/basakoral/test/blob/main/labs/week7/florentine-family-attributes.csv). 
 
 Every time someone updates the csv on the server your visualization will show also an updated version. 
 

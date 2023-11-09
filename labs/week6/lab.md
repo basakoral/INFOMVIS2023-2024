@@ -11,7 +11,7 @@
 
 - You have read and **programmed** along with:
   - Chapter 13 in *D3 - Interactive Data Visualization for the Web*.
-  - [infomvis-lab5-preReading.pdf](./infomvis-lab5-preReading.pdf) (under week6 in Github)
+  - [infomvis-lab6-preReading.pdf](./infomvis-lab6-preReading.pdf) (under week6 in Github)
   - [https://www.w3schools.com/js/js_classes.asp](https://www.w3schools.com/js/js_classes.asp) (repetition of JS classes with more examples)
   - [Scope and _this_ in JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this)
 
@@ -81,7 +81,7 @@ During this lab we will introduce a concept which will help you to structure a D
 
 _After implementing all tasks your visualization should look like this:_
 
-![Lab 05 - Preview](./infomvis-lab5-preview.gif)
+![Lab 05 - Preview](./infomvis-lab6-preview.gif)
 
 ## Conceptual and technical background
 
@@ -224,7 +224,7 @@ updateVis(){
 
 The previous example showed the implementation of a bar chart in an object-oriented way using ES6 classes. To follow the main divide-and-conquer concept (i.e., splitting up a complex problem into various sub-tasks) we should also apply this to the file structure of our project.
 
-![Project Overview](./infomvis-lab5-overview.png)
+![Project Overview](./infomvis-lab6-overview.png)
 
 We separate the visualization specific code into external files and create object instances in the file `main.js`, which is the entry point of our application. For example, if we want to use the same data for multiple charts we have to load the data only once in _main.js_. Thereby, our code stays clean and understandable.
 
@@ -240,7 +240,7 @@ For simplicity reasons, in the example code below, we have not always included t
 
 1. **Download the template**
 
-   [Template.zip](https://surfdrive.surf.nl/files/index.php/s/syDdTcP7n53Fj4C)
+   [Template.zip](./Template.zip)
 
    Check the `index.html` file and get a quick overview of the template.
 

@@ -33,7 +33,7 @@ This means that we are merging new data with existing elements. In the merging p
 - What happens to existing elements which have changed (update)
 - What happens to existing DOM elements which are not associated with data anymore (exit)
 
-![Data Join](infomvis2022-data-join.png)
+![Data Join](infomvis2023-data-join.png)
 
 *To take care of the update pattern you have to change the sequence of your D3 code a little bit. Instead of chaining everything together, some code snippets must be separated.*
 
@@ -123,7 +123,7 @@ function updateChart(data) {
 ```
 *Result:*
 
-![Update Pattern Example](infomvis2022-enter-update-exit.png)
+![Update Pattern Example](infomvis2023-enter-update-exit.png)
 
 
 ### Key function
@@ -148,7 +148,7 @@ let circle = svg.selectAll("circle")
 	.data([10, 15]);
 ```
 
-![Key Function (1)](infomvis2022-key-function-1.png)
+![Key Function (1)](infomvis2023-key-function-1.png)
 
 The index will be used again as the default key to match the new data to the actual circles. There are three circles on the webpage and two items in the new dataset. Therefore, the last circle will be removed and the other two circles will be bound to the new data.
 
@@ -169,7 +169,7 @@ circle = svg.selectAll("circle")
 
 In the above example, the key function allows us to map the data value directly instead of the default by-index behavior:
 
-![Key Function (2)](infomvis2022-key-function-2.png)
+![Key Function (2)](infomvis2023-key-function-2.png)
 
 This means, we can update the appropriate elements without having to delete and re-add elements. We can update them in place!
 
@@ -188,7 +188,7 @@ In this activity you will visualize how customer orders are processed at a coffe
 
 1. **Download the framework**
 
-	[template1.zip](https://surfdrive.surf.nl/files/index.php/s/1moMhx5oF0VFgcw)
+	[template1.zip](./template1.zip)
 
 	The framework includes:
 
@@ -212,7 +212,7 @@ In this activity you will visualize how customer orders are processed at a coffe
 	The visualization should consist of a label that indicates the current number of orders and *x* SVG circles that show the order queue.
 	
 	*You can use the following animation as a guide:*	
-	![Basic Queue Example](infomvis2022-basic-queue.gif)
+	![Basic Queue Example](infomvis2023-basic-queue.gif)
 	
 	- The current order queue is stored in the variable ```orders```. You can access the data in the function ```updateVisualization()```. The function is called automatically by our script every few seconds.
 	- Implement the D3 update pattern and make sure to append new elements for new orders and delete elements after orders are processed (default key function; map by index).
@@ -356,7 +356,7 @@ In this activity you will create an interactive bar chart showing a ranking of l
 ß
 1. **Download the framework**
 
-	[template2.zip](https://surfdrive.surf.nl/files/index.php/s/sPnRPRhqyDpyhdv)
+	[template2.zip](./template2.zip)
 
 	The framework is based on Bootstrap and D3. You should use it for the remainder of this lab. The template includes:
 	
@@ -382,7 +382,7 @@ In this activity you will create an interactive bar chart showing a ranking of l
 
 	*Show the coffee house chains and their number of stores worldwide. Your result should look similar to the screenshot below.*
 	
-	![Barchart example](infomvis2022-barchart-example.png)
+	![Barchart example](infomvis2023-barchart-example.png)
 	
 	
 
@@ -450,7 +450,7 @@ In this activity you will create an interactive bar chart showing a ranking of l
 	*You can optionally append a title for the y-axis.*
 	
 *Result:*
-![Activity 2 - Result](infomvis2022-activity2.gif)
+![Activity 2 - Result](infomvis2023-activity2.gif)
 
 
 -----
@@ -483,7 +483,7 @@ d3.selectAll("circle")
 	.duration(3000)
 	.attr("fill", "blue");
 ```
-![Transition with duration](infomvis2022-transition-duration.gif)
+![Transition with duration](infomvis2023-transition-duration.gif)
 
 #### Transitions Are Per-Element and Exclusive
 
@@ -600,12 +600,12 @@ data analysis. In this case, use a static comparison of several charts/images (e
 
 *Result (basic: assign keys by index):*
 
-![Activity 4 - Basic](infomvis2022-activity4-basic.gif)
+![Activity 4 - Basic](infomvis2023-activity4-basic.gif)
 
 
 *Result (advanced: custom key function):*
 
-![Activity 4 - Advanced](infomvis2022-activity4-advanced.gif)
+![Activity 4 - Advanced](infomvis2023-activity4-advanced.gif)
 
 
 
@@ -613,7 +613,7 @@ data analysis. In this case, use a static comparison of several charts/images (e
 
 #### Submission of lab (activity II, and III)
 
-Congratulations, you have now completed the activities of Lab 4!
+Congratulations, you have now completed the activities of Lab 5!
 
 Please submit the code of your completed lab (the final interactive bar chart of activities II and III).
 

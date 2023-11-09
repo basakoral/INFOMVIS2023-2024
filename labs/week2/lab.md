@@ -11,7 +11,7 @@ This lab includes three activities and covers JS basics. It is intended to solid
 
 *The result of this lab may look like the following screenshot. Among other things, you will work with data from amusement parks and museums and do some array manipulations and filtering. At the end you will use JS to call a function that will render a pre-configured bar chart.*
 
-![Lab 2 - Preview](./infomvis2022-lab2-preview.png)
+![Lab 2 - Preview](./infomvis2023-lab2-preview.png)
 
 ### A short reiteration of the basic concepts of JavaScript (JS)
 
@@ -77,25 +77,25 @@ let nestedNumbers = [[1, 2], [3, 4], [5, 6]];
 ```javascript
 // JS object with four properties
 let course = {
-	id: "INFOMVIS2022",
+	id: "INFOMVIS2023",
 	name: "Visualization",
 	students: 30,
 	active: true
 }
 
 // Accessing an object via dot notation, specifying the name of the property
-course.id; 		// Returns: INFOMVIS2022
+course.id; 		// Returns: INFOMVIS2023
 course.students;	// Returns: 30
 
 // We can include arrays in objects
 let course = {
-	id: "INFOMVIS2022",
+	id: "INFOMVIS2023",
 	students: ["Luuk", "Michelle", "Lucas", "Anne"]
 };
 
 // And we can also create arrays of objects
 let courses = [
-	{ id: "INFOMVIS2022", name: "Visualization" },
+	{ id: "INFOMVIS2023", name: "Visualization" },
 	{ id: "INFOMPR", name: "Pattern Recognition" }
 ];
 
@@ -113,7 +113,7 @@ courses[1].id; 	// Returns: INFOMPR
 ```javascript
 // JSON object
 let course = {
-	"id": "INFOMVIS2022",
+	"id": "INFOMVIS2023",
 	"name": "Visualization",
 	"students": 30,
 	"active": true
@@ -272,7 +272,7 @@ arrayWithNames.forEach( (element, index) => {
 ```
 
 *Result:*
-![Lab 2 - For-Loops](./infomvis2022-for-loop-examples.png)
+![Lab 2 - For-Loops](./infomvis2023-for-loop-examples.png)
 
 
 #### Functions
@@ -604,7 +604,7 @@ We will provide a template with a basic *HTML structure*, a *dataset* (stored in
 
 1. **Download template for 'week01_lab_part2 js', unzip it and open it as a new project in Webstorm:**
 
-	[download week-01_lab_part2.zip](https://surfdrive.surf.nl/files/index.php/s/7yZvgpOe7AuTVQX)
+	[download week-02_lab_part2.zip](./week-02_lab_part2.zip)
 
 2. **Familiarize yourself with the provided HTML document: ```index.html```**
 
@@ -612,7 +612,7 @@ We will provide a template with a basic *HTML structure*, a *dataset* (stored in
 
 3. **Array sorting and using the Chrome DevTools**
 
-	Open the JS file ```week01_lab_part2.js``` (*js* folder). Most of the tasks you need to complete should be implemented in the function: *dataFiltering()*.
+	Open the JS file ```week02_lab_part2.js``` (*js* folder). Most of the tasks you need to complete should be implemented in the function: *dataFiltering()*.
 
 	We have included a template of the function, and have created a local variable ```attractions``` from the global variable and we have called the function right before. You should work with the local variable ```attractions``` - don't override the global one.
 
@@ -623,11 +623,11 @@ We will provide a template with a basic *HTML structure*, a *dataset* (stored in
 	- Open the Chrome Developer Tools pane (View -> Developer -> Developer Tools)
 	- Click on the `Sources` tab . You'll notice that the HTML/JS/CSS files you're currently
 	 working on are listed here. 
-	 - Click on the ***week01_lab_part2.js*** file.
-        ![Watch](./week-01_lab_sources_panel.png)
+	 - Click on the ***week02_lab_part2.js*** file.
+        ![Watch](./week-02_lab_sources_panel.png)
 
 	- From this file view, we are able to set [breakpoints](https://developer.chrome.com/docs/devtools/javascript/breakpoints/) that let you step through your code as it executes, which is an incredibly powerful debugging tool. **Add breakpoints on lines 14 and 15 as shown below and refresh the page.**
-        ![Watch](./week-01_lab_breakpoint.png)
+        ![Watch](./week-02_lab_breakpoint.png)
 
 	- You'll notice now that your code stops executing at line 14. If you hover over the
 	 ```attractions```, you can view the value assigned to the variable.

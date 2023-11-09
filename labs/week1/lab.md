@@ -56,7 +56,7 @@ The next minutes are split up into multiple theoretical and interactive sections
 
 *The result of the first lab may look like the following screenshot. Most of the design decisions are up to you - so feel free to be creative and come up with your own ideas.*
 
-![Lab 1 - Preview](./infomvis2022-lab1-preview.png)
+![Lab 1 - Preview](./infomvis2023-lab1-preview.png)
 
 **You can find the image files on corresponding Github directory!**
 
@@ -326,7 +326,7 @@ In this activity, you will use CSS to add custom styles to your HTML file.
 
 Rather than coding from scratch, frameworks enable you to utilize ready-made blocks of code to help you get started. They give you a solid foundation for what a typical web project requires and usually they are also flexible enough for customization.
 
-In INFOMVIS2022 we use ***Bootstrap*** as an example open source HTML, JS, and CSS framework. It is one of the most widely used frameworks, it is easy to understand and it provides great documentation with many examples.
+In INFOMVIS2023 we use ***Bootstrap*** as an example open source HTML, JS, and CSS framework. It is one of the most widely used frameworks, it is easy to understand and it provides great documentation with many examples.
 
 The question whether a framework can be useful depends on the individual project and on the developer. Therefore, it is up to you to decide if you want to use it in your homeworks or projects.
 

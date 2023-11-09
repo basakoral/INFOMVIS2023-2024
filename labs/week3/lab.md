@@ -13,7 +13,7 @@
 ### Prerequisites
 
 - You have read chapter 3 (p. 52-62) and chapter 5 (p. 67-72, p. 79-87)  in *D3 - Interactive Data Visualization for the Web*.
-- You have downloaded the template for this week's lab on Surfdrive. This [link](https://surfdrive.surf.nl/files/index.php/s/y2KUQIVLS4jlwAN) should get you there quickly.
+- You have downloaded the template for this week's lab on Surfdrive. This [link](./week-03_lab_template.zip) should get you there quickly.
 
 &nbsp;
 
@@ -40,7 +40,7 @@ A summary of D3's features and key aspects by *Scott Murray*:
 
 ### D3 Version
 
-**INFOMVIS2022 is using D3 version 7!**
+**INFOMVIS2023 is using D3 version 7!**
 
 Many of the changes in v5 - v7 address very specific issues that are not of relevance for you, and thus, the examples in the textbook (D3 v.4) still serve as
 excellent references. Also, when looking up code online, be aware that many examples still use older versions and, as
@@ -111,7 +111,7 @@ project/
 
 *Result:*
 
-![SVG Examples](./infomvis2022-svg-result.png)
+![SVG Examples](./infomvis2023-svg-result.png)
 
 &nbsp;
 
@@ -129,7 +129,7 @@ d3.select("body").append("p").text("Hello World!");
 
 In this example we have used D3 to add a paragraph with the text "Hello World!" to a basic webpage.
 
-![D3 - Add element to DOM](./infomvis2022-d3-generate-element.png)
+![D3 - Add element to DOM](./infomvis2023-d3-generate-element.png)
 
 Before going into further details we want to introduce the JS concept of *Method Chaining* briefly:
 
@@ -184,7 +184,7 @@ d3.select("body")
 
 #### Activity I
 
-1. **Download the Template for this week. [link](https://surfdrive.surf.nl/files/index.php/s/y2KUQIVLS4jlwAN)**
+1. **Download the Template for this week. [link](./week-03_lab_template.zip)**
 
 2. **Navigate to 'activity_1' and create a new D3 project inside the folder.**
 
@@ -217,7 +217,7 @@ let p = d3.select("body").selectAll("p")
 		.append("p")
 		.text("Array Element");
 ```
-![D3 - Bind Data 1](./infomvis2022-d3-bind-data-1.png)
+![D3 - Bind Data 1](./infomvis2023-d3-bind-data-1.png)
 
 
 (1) ```.select("body")``` - Reference to the target container
@@ -232,7 +232,7 @@ Instead of returning just the regular selection, the *data()* operator returns *
 - **Update** contains existing elements bound to the data
 - **Exit** contains existing elements that are not bound to data anymore and should be removed
 
-These three methods, along with merge() and join(), are powerful concepts in d3 and open up the floodgates for us to dynamcially handle updates to data. We will learn more about how to use them during Week 4's lab, but in the meantime, feel free to preview this content in Chapter 9 of *D3 - Interactive Data Visualization for the Web*.
+These three methods, along with merge() and join(), are powerful concepts in d3 and open up the floodgates for us to dynamcially handle updates to data. We will learn more about how to use them during Week 5's lab, but in the meantime, feel free to preview this content in Chapter 9 of *D3 - Interactive Data Visualization for the Web*.
 
 There are no "p"-elements on the page so the **enter** selection contains placeholders for all elements in the array. In this and the following examples we will concentrate only on the *enter* selection. You will learn more about the enter-update-exit sequence when we are working with interactive datasets.
 
@@ -287,7 +287,7 @@ In this example we have included a JS function in the *text()* operator.
 
 &nbsp;
 In case you coded along with the example, this is how your website should look now that you've modified ```.text("Array Element")```:
-![D3 - Bind Data 2](./infomvis2022-d3-bind-data-2.png)
+![D3 - Bind Data 2](./infomvis2023-d3-bind-data-2.png)
 
 In our case we are using the function to access individual values of the loaded array. That is one feature of D3: It can pass array/data elements and corresponding data indices to an anonymous function (which is called for each array element individually).
 Generally in D3 documentation and tutorials, you'll see the parameter ```d``` used for the current data element and ```i```  (or ```index```) used for the index of the current data element. The index is passed in as the second element to the function calls and is optional.
@@ -347,7 +347,7 @@ d3.select("body").selectAll("p")
 - If you want to assign specific styles to the whole selection (e.g. font-color: blue), we recommend you to define an HTML class (*"custom-paragraph"* in our example) and add these rules in an external stylesheet. That will make your code concise and reusable.
 
 *Result:*
-![D3 - Bind Data 3](./infomvis2022-d3-bind-data-3.png)
+![D3 - Bind Data 3](./infomvis2023-d3-bind-data-3.png)
 
 
 
@@ -376,7 +376,7 @@ svg.selectAll("rect")
 - It is crucial to set the SVG coordinates. If we don't set the *x* and *y* values, all the rectangles will be drawn on the same position at (0, 0). By using the index - of the current element in the selection - we can create a *dynamic x property* and shift every newly created rectangle 60px to the right.
 
 *Result:*
-![D3 - Bind Data 4](./infomvis2022-d3-bind-data-4.png)
+![D3 - Bind Data 4](./infomvis2023-d3-bind-data-4.png)
 
 
 -----
@@ -410,7 +410,7 @@ svg.selectAll("rect")
 	- Add a border to every circle (SVG property: ```stroke```)
 
    *The result might look like the following:*
-   ![D3 - Result Activity 2](./infomvis2022-d3-activity-2.png)
+   ![D3 - Result Activity 2](./infomvis2023-d3-activity-2.png)
 
 -----
 
@@ -480,7 +480,7 @@ console.log(`look at that: The browser already interpreted this line, while it's
 
 The callback function - the inner function of *d3.csv()* - is called only after the dataset is loaded completely to browser memory. In the meantime other scripts are executed.
 
-![D3 - Data Loading 1](./infomvis2022-d3-load-data-1.png)
+![D3 - Data Loading 1](./infomvis2023-d3-load-data-1.png)
 
 
 -----
@@ -560,7 +560,7 @@ The callback function - the inner function of *d3.csv()* - is called only after 
 	- Text anchor = middle
 
 *Your result should look similar to this screenshot:*
-![Activity 3 Result](./infomvis2022-activity-3.png)
+![Activity 3 Result](./infomvis2023-activity-3.png)
 
 
 *Important notice: This example is not intended to be a best practice example of how to work with D3 scales. It was designed to help you to get a better understanding of different basic concepts in D3.*
@@ -602,7 +602,7 @@ Later in this course you will also learn how to create interactive maps.
 
 #### Submission of lab (only activity_3)
 
-Congratulations, you have now completed the activities of Lab 2!
+Congratulations, you have now completed the activities of Lab 3!
 
 Please upload the code of your completed lab (only activity_3) on Surfdrive together with this week's homework. More instructions in the homework manual!
 
