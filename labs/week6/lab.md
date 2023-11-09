@@ -10,8 +10,8 @@
 ### Prerequisites
 
 - You have read and **programmed** along with:
-  - Chapter 9 in *D3 - Interactive Data Visualization for the Web*.
-  - [infomvis-lab5-preReading.pdf](./infomvis-lab5-preReading.pdf) (under week-05 in surfdrive)
+  - Chapter 13 in *D3 - Interactive Data Visualization for the Web*.
+  - [infomvis-lab5-preReading.pdf](./infomvis-lab5-preReading.pdf) (under week5 in Github)
   - [https://www.w3schools.com/js/js_classes.asp](https://www.w3schools.com/js/js_classes.asp) (repetition of JS classes with more examples)
   - [Scope and _this_ in JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this)
 
