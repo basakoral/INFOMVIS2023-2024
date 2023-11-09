@@ -1,4 +1,4 @@
-# Week 02 | Lab
+# Week 02 | Lab (24.11.2023)
 
 ## Fundamentals of Web Development (JavaScript)
 
