@@ -9,7 +9,7 @@
 
 ### Prerequisites
 
-You have read and **programmed** along with:
+- You have read and **programmed** along with:
   - Chapter 9 in *D3 - Interactive Data Visualization for the Web*.
   - [infomvis-lab5-preReading.pdf](./infomvis-lab5-preReading.pdf) (under week-05 in surfdrive)
   - [https://www.w3schools.com/js/js_classes.asp](https://www.w3schools.com/js/js_classes.asp) (repetition of JS classes with more examples)
