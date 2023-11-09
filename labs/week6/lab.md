@@ -484,7 +484,7 @@ _In the next activity you will have to implement a second chart with an interact
 
    - The implementation in this file acts as a controller and can access both charts. Alternatively, and more important for larger systems, you can include a more sophisticated event handling mechanism. But for this example it is enough to create a global function and link the two visualizations directly.
 
-     **_The way we do this is a pre-stage. You will learn more about event handling and system design in lab 8._**
+     **_The way we do this is a pre-stage. You will learn more about event handling and system design in lab 7._**
 
    - Update the x domain of the stacked area chart every time the _brushed_ event gets triggered. And don't forget to update the chart by calling:
 
@@ -583,7 +583,7 @@ Most importantly, you can use different measures other than `px` to define the h
 an HTML element. While pixels are absolute units, `vh`, `wh`, `%`, `em`, and `rem`
 are relative units and much more suited for responsive designs. These relative units will help you to
 meet accessibility standards and scale better on different devices. [Here's an article that describes
-hese measures in greater detail.](https://docs.elementor.com/article/595-difference-between-px-em-rem-percentage-vw-vh)
+hese measures in greater detail.](https://elementor.com/help/whats-the-difference-between-px-em-rem-vw-and-vh/#:~:text=While%20PX%2C%20EM%2C%20and%20REM,is%20the%20viewable%20screen's%20height.)
 
 In this lab, we've set up `index.html` using such relative units for you. We've used `vh` to define the
 proportions of a 3-row layout (header, graph, brush). Then, we used `%` to pass on the height from the rows (parents)
