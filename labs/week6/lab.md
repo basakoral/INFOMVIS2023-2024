@@ -670,6 +670,6 @@ Congratulations, you have now completed the activities of this week's lab!
 **Resources**
 
 - p. 264-273 in _D3 - Interactive Data Visualization for the Web_ by Scott Murray
-- [http://javascriptplayground.com/blog/2012/04/javascript-variable-scope-this/](http://javascriptplayground.com/blog/2012/04/javascript-variable-scope-this/)
+- [https://www.sitepoint.com/demystifying-javascript-variable-scope-hoisting/](https://www.sitepoint.com/demystifying-javascript-variable-scope-hoisting/)
 - [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Introduction_to_Object-Oriented_JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Introduction_to_Object-Oriented_JavaScript)
 - [http://www.w3schools.com/js/default.asp](http://www.w3schools.com/js/default.asp)
