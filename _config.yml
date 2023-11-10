@@ -1,4 +1,5 @@
 # _config.yml
+title: INFOMVIS2023-2024
 markdown: kramdown
 kramdown:
   input: GFM
