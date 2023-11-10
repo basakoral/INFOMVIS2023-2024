@@ -166,12 +166,6 @@ Every modern-day web browser has built-in *developer tools* that expose the curr
 1. **Create a new folder ```js``` in your project, download the file ```dom-example.js``` and save it in your newly created folder**
 
 	[dom-example.js](./assests/dom-example.js)
-	[Download dom-example.js](javascript:void((function() {
-	    var a = document.createElement('a');
-	    a.href = './assets/dom-example.js';
-	    a.download = 'dom-example.js';
-	    a.click();
-	})()))
 
 3. **Include the external JavaScript file that you just downloaded in your HTML document. Add the following line at the bottom of your previously created ```basics.html``` (inside the ```<body></body>```)**
 
