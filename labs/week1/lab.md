@@ -165,10 +165,10 @@ Every modern-day web browser has built-in *developer tools* that expose the curr
 
 1. **Create a new folder ```js``` in your project, download the file ```dom-example.js``` and save it in your newly created folder**
 
-	[dom-example.js](./assests/dom-example.js){: .btn .btn-blue }
+	[dom-example.js](./assests/dom-example.js)
+	[Download](https://basakoral.github.io/INFOMVIS2023-2024/labs/week1/assests/dom-example.js)
 
-
-2. **Include the external JavaScript file that you just downloaded in your HTML document. Add the following line at the bottom of your previously created ```basics.html``` (inside the ```<body></body>```)**
+3. **Include the external JavaScript file that you just downloaded in your HTML document. Add the following line at the bottom of your previously created ```basics.html``` (inside the ```<body></body>```)**
 
 	```
 	<script src="js/dom-example.js"></script>
@@ -177,7 +177,7 @@ Every modern-day web browser has built-in *developer tools* that expose the curr
 	This script will listen to your button (*ID: infomvis2023-basics*). It will automatically deliver random facts if you click on the button.
 
 
-3. **Open *basics.html* in your web browser and navigate to *Developer Tools***
+4. **Open *basics.html* in your web browser and navigate to *Developer Tools***
 
 	We strongly encourage you to use Google Chrome or Mozilla Firefox. On Mac OS, you can navigate to the Developer Tools using:
 
@@ -186,7 +186,7 @@ Every modern-day web browser has built-in *developer tools* that expose the curr
 
 	Make sure to check out the keyboard shortcut of your system to open the developer tools!
 
-4. **Inspecting the DOM with the *Web Inspector***
+5. **Inspecting the DOM with the *Web Inspector***
 
 	In the default mode, the *Web Inspector* should be docked to the bottom of the window and split the page horizontally.
 
@@ -194,7 +194,7 @@ Every modern-day web browser has built-in *developer tools* that expose the curr
 
 	The HTML you write is parsed by the browser and turned into the DOM. In simple cases, this will look like your raw HTML, but if any JavaScript code has been executed, the current DOM may be different, as JavaScript commands can add, remove, and adjust the DOM dynamically.
 
-5. **Update the DOM: Click on the previously created button!**
+6. **Update the DOM: Click on the previously created button!**
 
 	Every time you click on the button, a function in the external JavaScript file that we provided for you will be triggered that adds a new paragraph (random fact) to the DOM tree. You can see the new elements in the browser window and the current state of the DOM in the *Web Inspector*.
 
@@ -202,7 +202,7 @@ Every modern-day web browser has built-in *developer tools* that expose the curr
 
 	If you have trouble getting this step to work you should double check that you have added the appropriate IDs to your HTML tags!
 
-6. **Update the DOM: Delete nodes from the DOM tree**
+7. **Update the DOM: Delete nodes from the DOM tree**
 
 	You can also use the *Web Inspector* to modify your DOM directly. You can edit the content, add attributes or delete nodes. Try it out and delete some paragraphs!
 
